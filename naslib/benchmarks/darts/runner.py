@@ -19,6 +19,8 @@ from naslib.search_spaces import DartsSearchSpace
 from naslib.utils import utils, setup_logger
 
 config = utils.get_config_from_args()
+config.seed = int(config.seed)
+config.search.seed = int(config.search.seed)
 utils.set_seed(config.seed)
 
 logger = setup_logger(config.save + "/log.log")
@@ -48,8 +50,8 @@ optimizer.adapt_search_space(search_space)
 trainer = Trainer(optimizer, config)
 # trainer.search(resume_from=utils.get_last_checkpoint(config) if config.resume else "")
 
-# if config.eval_only:
-# trainer.evaluate(resume_from=utils.get_last_checkpoint(config, search=False) if config.resume else "")
-# else:
-# trainer.search(resume_from=utils.get_last_checkpoint(config) if config.resume else "")
-# trainer.evaluate(resume_from=utils.get_last_checkpoint(config, search=False) if config.resume else "")
+if config.eval_only:
+    trainer.evaluate(resume_from=utils.get_last_checkpoint(config, search=False) if config.resume else "")
+else:
+    trainer.search(resume_from=utils.get_last_checkpoint(config) if config.resume else "")
+    trainer.evaluate(resume_from=utils.get_last_checkpoint(config, search=False) if config.resume else "", train_from_scratch=True)

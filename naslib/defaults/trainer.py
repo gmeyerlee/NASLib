@@ -13,6 +13,7 @@ from naslib.search_spaces.core.query_metrics import Metric
 
 from naslib.utils import utils
 from naslib.utils.logging import log_every_n_seconds, log_first_n
+from naslib.search_spaces.darts.conversions import convert_naslib_to_genotype
 
 from .additional_primitives import DropPathWrapper
 
@@ -247,6 +248,7 @@ class Trainer(object):
         resume_from="",
         best_arch=None,
         dataset_api=None,
+        train_from_scratch=False
     ):
         """
         Evaluate the final architecture as given from the optimizer.
@@ -272,9 +274,9 @@ class Trainer(object):
             self._setup_checkpointers(search_model)  # required to load the architecture
 
             best_arch = self.optimizer.get_final_architecture()
-        logger.info("Final architecture:\n" + best_arch.modules_str())
+        logger.info("Final architecture:\n" + str(convert_naslib_to_genotype(best_arch)))
 
-        if best_arch.QUERYABLE:
+        if best_arch.QUERYABLE and not train_from_scratch:
             metric = Metric.TEST_ACCURACY
             result = best_arch.query(
                 metric=metric, dataset=self.config.dataset, dataset_api=dataset_api
@@ -350,16 +352,18 @@ class Trainer(object):
                         optim.zero_grad()
                         logits_train = best_arch(input_train)
                         train_loss = loss(logits_train, target_train)
-                        if hasattr(
-                            best_arch, "auxilary_logits"
-                        ):  # darts specific stuff
-                            log_first_n(logging.INFO, "Auxiliary is used", n=10)
-                            auxiliary_loss = loss(
-                                best_arch.auxilary_logits(), target_train
-                            )
-                            train_loss += (
-                                self.config.evaluation.auxiliary_weight * auxiliary_loss
-                            )
+
+                        # if hasattr(
+                        #     best_arch, "auxilary_logits"
+                        # ):  # darts specific stuff
+                        #     log_first_n(logging.INFO, "Auxiliary is used", n=10)
+                        #     auxiliary_loss = loss(
+                        #         best_arch.auxilary_logits(), target_train
+                        #     )
+                        #     train_loss += (
+                        #         self.config.evaluation.auxiliary_weight * auxiliary_loss
+                        #     )
+
                         train_loss.backward()
                         if grad_clip:
                             torch.nn.utils.clip_grad_norm_(
