@@ -1,4 +1,4 @@
-predictors=(gbdt rf sotle)
+predictors=(lgb rf sotle)
 experiment_types=(vary_train_size vary_train_size vary_fidelity)
 
 start_seed=$1
@@ -9,7 +9,7 @@ fi
 
 # folders:
 base_file=NASLib/naslib
-s3_folder=p201_c10_mar8
+s3_folder=p201_c10_aug2
 out_dir=$s3_folder\_$start_seed
 
 # search space / data:

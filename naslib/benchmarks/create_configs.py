@@ -97,8 +97,8 @@ def main(args):
             fidelity_list.pop(1)
             fidelity_list.pop(1)
             
-        # todo: delete this later
-        train_size_list = [20, 40, 60]
+        # test
+        #train_size_list = [20, 40, 60]
 
         for i in range(args.start_seed, args.start_seed + args.trials):
             config = {
