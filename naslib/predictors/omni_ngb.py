@@ -42,7 +42,7 @@ class OmniNGBPredictor(Predictor):
         self.min_train_size = min_train_size
         self.max_zerocost = max_zerocost
 
-    def pre_compute(self, xtrain, xtest):
+    def pre_compute(self, xtrain, xtest, unlabeled=None):
         """
         All of this computation could go into fit() and query(), but we do it
         here to save time, so that we don't have to re-compute Jacobian covariances
