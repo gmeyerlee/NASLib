@@ -249,18 +249,27 @@ class DartsConversionsTest(unittest.TestCase):
         convert_genotype_to_naslib(self.genotype, self.optimizer.graph)
         genotype = convert_naslib_to_genotype(self.optimizer.graph)
 
+        assert self._are_genotypes_equivalent(genotype, self.genotype) == True
+
+    def _are_genotypes_equivalent(self, genotype1, genotype2):
         def make_set_representation(edges):
             return [set([edges[i], edges[i + 1]]) for i in range(0, 8, 2)]
 
-        genotype_normal = make_set_representation(genotype.normal)
-        original_genotype_normal = make_set_representation(self.genotype.normal)
+        genotype1_normal = make_set_representation(genotype1.normal)
+        genotype2_normal = make_set_representation(genotype2.normal)
 
-        assert genotype_normal == original_genotype_normal
+        genotype1_reduction = make_set_representation(genotype1.reduce)
+        genotype2_reduction = make_set_representation(genotype2.reduce)
 
-        genotype_reduction = make_set_representation(genotype.reduce)
-        original_genotype_reduction = make_set_representation(self.genotype.reduce)
+        return (genotype1_normal == genotype2_normal) and (genotype1_reduction == genotype2_reduction)
 
-        assert genotype_reduction == original_genotype_reduction
+    def test_set_alphas_for_genotype(self):
+        self.optimizer.adapt_search_space(DartsSearchSpace())
+        self.optimizer.graph.set_alphas_for_genotype(self.genotype)
+        best_arch = self.optimizer.get_final_architecture()
+        genotype = convert_naslib_to_genotype(best_arch)
+
+        assert self._are_genotypes_equivalent(genotype, self.genotype) == True
 
 
 if __name__ == '__main__':

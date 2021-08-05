@@ -18,7 +18,9 @@ from naslib.search_spaces.darts.conversions import (
     convert_compact_to_naslib,
     convert_naslib_to_compact,
     convert_naslib_to_genotype,
+    get_cell_of_type,
     make_compact_mutable,
+    create_edge_op_dict
 )
 from naslib.search_spaces.core.query_metrics import Metric
 from .primitives import FactorizedReduce
@@ -564,6 +566,34 @@ class DartsSearchSpace(Graph):
 
     def get_type(self):
         return "darts"
+
+    def set_alphas_for_genotype(self, genotype):
+        """
+        Sets alphas so that the best architecture after discretization is
+        the same as the given genotype
+        """
+        edges_op = create_edge_op_dict(genotype)
+        op_alpha_index = {
+            ("Identity", "FactorizedReduce"): 0,
+            "MaxPool": 2,
+            "AvgPool": 3,
+            "SepConv3x3": 4,
+            "SepConv5x5": 5,
+            "DilConv3x3": 6,
+            "DilConv5x5": 7,
+        }
+
+        cells = {
+            'normal_cell': get_cell_of_type(self, 'normal_cell'),
+            'reduction_cell': get_cell_of_type(self, 'reduction_cell')
+        }
+
+        for cell_type in edges_op.keys():
+            cell = cells[cell_type]
+            for edge, op in edges_op[cell_type].items():
+                with torch.no_grad():
+                    alpha_params = cell.edges[edge]['alpha']
+                    alpha_params[op_alpha_index[op]] = 1.0
 
 
 def _set_ops(edge, C, stride):

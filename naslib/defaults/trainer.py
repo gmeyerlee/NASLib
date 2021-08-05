@@ -10,6 +10,7 @@ import numpy as np
 from fvcore.common.checkpoint import PeriodicCheckpointer
 
 from naslib.search_spaces.core.query_metrics import Metric
+from naslib.search_spaces.darts.conversions import convert_naslib_to_genotype
 
 from naslib.utils import utils
 from naslib.utils.logging import log_every_n_seconds, log_first_n
@@ -272,9 +273,9 @@ class Trainer(object):
             self._setup_checkpointers(search_model)  # required to load the architecture
 
             best_arch = self.optimizer.get_final_architecture()
-        logger.info("Final architecture:\n" + best_arch.modules_str())
+        logger.info("Final architecture:\n" + str(convert_naslib_to_genotype(best_arch)))
 
-        if best_arch.QUERYABLE:
+        if best_arch.QUERYABLE and not retrain:
             metric = Metric.TEST_ACCURACY
             result = best_arch.query(
                 metric=metric, dataset=self.config.dataset, dataset_api=dataset_api
@@ -377,9 +378,9 @@ class Trainer(object):
                         )
 
                     # Validation queue
-                    if self.valid_queue:
+                    if self.test_queue:
                         for i, (input_valid, target_valid) in enumerate(
-                            self.valid_queue
+                            self.test_queue
                         ):
 
                             input_valid = input_valid.to(self.device).float()

@@ -69,6 +69,38 @@ def convert_naslib_to_genotype(naslib_object):
     )
 
 
+def create_edge_op_dict(genotype):
+    """
+    Returns a dictionary of the operations on each edge of the cell based on
+    the genotype
+    """
+    genotype_to_ops = {
+        "skip_connect": ("Identity", "FactorizedReduce"),
+        "sep_conv_3x3": ("SepConv3x3"),
+        "dil_conv_3x3": ("DilConv3x3"),
+        "sep_conv_5x5": ("SepConv5x5"),
+        "dil_conv_5x5": ("DilConv5x5"),
+        "avg_pool_3x3": ("AvgPool"),
+        "max_pool_3x3": ("MaxPool"),
+        "zero": ("Zero"),
+    }
+
+    cell_names = ["normal_cell", "reduction_cell"]
+
+    # create a dictionary of edges to ops in the genotype
+    edge_op_dict = {"normal_cell": {}, "reduction_cell": {}}
+    for c, cell_type in enumerate(["normal", "reduce"]):
+        cell = eval("genotype." + cell_type)
+        tail = 2
+        for i, edge in enumerate(cell):
+            if i % 2 == 0:
+                tail += 1
+            head = edge[1] + 1
+            edge_op_dict[cell_names[c]][(head, tail)] = genotype_to_ops[edge[0]]
+
+    return edge_op_dict
+
+
 def convert_genotype_to_naslib(genotype, naslib_object):
     """
     Converts the genotype representation to a naslib object
@@ -82,28 +114,8 @@ def convert_genotype_to_naslib(genotype, naslib_object):
 
     warning: this method will delete and modify the edges in naslib_object.
     """
-    genotype_to_ops = {
-        "skip_connect": ("Identity", "FactorizedReduce"),
-        "sep_conv_3x3": ("SepConv3x3"),
-        "dil_conv_3x3": ("DilConv3x3"),
-        "sep_conv_5x5": ("SepConv5x5"),
-        "dil_conv_5x5": ("DilConv5x5"),
-        "avg_pool_3x3": ("AvgPool"),
-        "max_pool_3x3": ("MaxPool"),
-        "zero": ("Zero"),
-    }
-    cell_names = ["normal_cell", "reduction_cell"]
 
-    # create a dictionary of edges to ops in the genotype
-    edge_op_dict = {"normal_cell": {}, "reduction_cell": {}}
-    for c, cell_type in enumerate(["normal", "reduce"]):
-        cell = eval("genotype." + cell_type)
-        tail = 2
-        for i, edge in enumerate(cell):
-            if i % 2 == 0:
-                tail += 1
-            head = edge[1] + 1
-            edge_op_dict[cell_names[c]][(head, tail)] = genotype_to_ops[edge[0]]
+    edge_op_dict = create_edge_op_dict(genotype)
 
     def add_genotype_op_index(edge):
         # function that adds the op index from genotype to each edge, and deletes the rest
@@ -152,7 +164,7 @@ def convert_genotype_to_config(genotype):
         n = 2
         for node_idx in range(4):
             end = start + n
-            ops = cell[2 * node_idx : 2 * node_idx + 2]
+            ops = cell[2 * node_idx: 2 * node_idx + 2]
 
             # get edge idx
             edges = {
