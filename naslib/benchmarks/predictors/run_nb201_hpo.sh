@@ -1,10 +1,8 @@
-predictors=(bananas bonas gcn mlp nao seminas \
-lgb ngb rf xgb \
+predictors=(bananas bonas gcn mlp \
 bayes_lin_reg bohamiann dngo \
 gp sparse_gp var_sparse_gp)
 
-experiment_types=(vary_train_size vary_train_size vary_train_size vary_train_size vary_train_size vary_train_size \
-vary_train_size vary_train_size vary_train_size vary_train_size \
+experiment_types=(vary_train_size vary_train_size vary_train_size vary_train_size \
 vary_train_size vary_train_size vary_train_size \
 vary_train_size vary_train_size vary_train_size)
 
