@@ -1,4 +1,4 @@
-predictors=(omni_ngb)
+predictors=(omni_seminas)
 experiment_types=(vary_both)
 
 start_seed=$1
@@ -9,7 +9,7 @@ fi
 
 # folders:
 base_file=NASLib/naslib
-s3_folder=m201_c10_aug4
+s3_folder=m201_c10_aug8
 out_dir=$s3_folder\_$start_seed
 
 # search space / data:
