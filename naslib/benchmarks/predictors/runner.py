@@ -10,8 +10,8 @@ from naslib.predictors import BayesianLinearRegression, BOHAMIANN, BonasPredicto
 DNGOPredictor, EarlyStopping, Ensemble, GCNPredictor, GPPredictor, \
 LCEPredictor, LCEMPredictor, LGBoost, MLPPredictor, NGBoost, OmniNGBPredictor, \
 OmniSemiNASPredictor, RandomForestPredictor, SVR_Estimator, SemiNASPredictor, \
-SoLosspredictor, SparseGPPredictor, VarSparseGPPredictor, XGBoost, ZeroCostV1, \
-ZeroCostV2, GPWLPredictor
+SoLosspredictor, SparseGPPredictor, VarSparseGPPredictor, XGBoost, ZeroCostBaseline, \
+ZeroCostV1, ZeroCostV2, GPWLPredictor
 
 from naslib.search_spaces.core.query_metrics import Metric
 from naslib.search_spaces import NasBench101SearchSpace, NasBench201SearchSpace, \
@@ -34,6 +34,7 @@ supported_predictors = {
     'bonas': BonasPredictor(encoding_type='bonas', hpo_wrapper=True),
     'dngo': DNGOPredictor(encoding_type='adjacency_one_hot'),
     'fisher': ZeroCostV2(config, batch_size=64, method_type='fisher'),
+    'flops': ZeroCostBaseline(method_type='flops'),
     'gcn': GCNPredictor(encoding_type='gcn', hpo_wrapper=True),
     'gp': GPPredictor(encoding_type='adjacency_one_hot'),
     'gpwl': GPWLPredictor(ss_type=config.search_space, kernel_type='wloa', optimize_gp_hyper=True, h='auto'),
@@ -48,6 +49,7 @@ supported_predictors = {
     'mlp': MLPPredictor(encoding_type='adjacency_one_hot', hpo_wrapper=True),
     'nao': SemiNASPredictor(encoding_type='seminas', semi=False, hpo_wrapper=True),
     'ngb': NGBoost(encoding_type='adjacency_one_hot', hpo_wrapper=True),
+    'params': ZeroCostBaseline(method_type='params'),
     'rf': RandomForestPredictor(encoding_type='adjacency_one_hot', hpo_wrapper=True),
     'seminas': SemiNASPredictor(encoding_type='seminas', semi=True, hpo_wrapper=True),
     'snip': ZeroCostV2(config, batch_size=64, method_type='snip'),

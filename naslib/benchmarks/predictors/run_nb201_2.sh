@@ -1,5 +1,5 @@
-predictors=(omni_seminas_cat omni_seminas seminas)
-experiment_types=(vary_train_size vary_train_size vary_train_size)
+predictors=(flops params)
+experiment_types=(single single)
 
 start_seed=$1
 if [ -z "$start_seed" ]
@@ -9,7 +9,7 @@ fi
 
 # folders:
 base_file=NASLib/naslib
-s3_folder=p201_c10_may19
+s3_folder=p201_baselines_aug7
 out_dir=$s3_folder\_$start_seed
 
 # search space / data:
