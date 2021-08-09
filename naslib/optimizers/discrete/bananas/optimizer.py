@@ -3,6 +3,7 @@ import logging
 import torch
 import copy
 import numpy as np
+from scipy import stats
 
 from naslib.optimizers.core.metaclasses import MetaOptimizer
 from naslib.optimizers.discrete.bananas.acquisition_functions import acquisition_function
@@ -51,6 +52,11 @@ class Bananas(MetaOptimizer):
 
         self.zc = ('omni' in self.predictor_type)
         self.semi = ('semi' in self.predictor_type)
+        
+        # guided compare experiment
+        self.guided_compare = True
+        self.guided_compare_epochs = [20, 60, 100]
+        self.kts = []
 
     def adapt_search_space(self, search_space, scope=None, dataset_api=None):
         assert search_space.QUERYABLE, "Bananas is currently only implemented for benchmarks."
@@ -163,6 +169,20 @@ class Bananas(MetaOptimizer):
                     values = [acq_fn(enc, {'jacov_scores':[score]}) for enc, score in zip(candidates, zc_scores)]
                 else:
                     values = [acq_fn(encoding) for encoding in candidates]
+                    
+                if self.guided_compare and epoch in self.guided_compare_epochs:
+                    # compute the kendall tau of the candidate predictions with their true accuracies
+                    predict = acquisition_function(ensemble=ensemble, 
+                                                   ytrain=ytrain,
+                                                   acq_fn_type='exploit_only')
+                    
+                    test_pred = [predict(encoding) for encoding in candidates]
+                    ytest = []
+                    for arch in candidates:
+                        ytest.append(arch.query(self.performance_metric, self.dataset, dataset_api=self.dataset_api))
+                    self.kts.append(stats.kendalltau(values, ytest)[0])
+                    logger.info('{} kendalltau {}'.format(epoch, self.kts[-1]))
+
                 sorted_indices = np.argsort(values)
                 choices = [candidates[i] for i in sorted_indices[-self.k:]]
                 self.next_batch = [*choices]
@@ -217,3 +237,6 @@ class Bananas(MetaOptimizer):
 
     def get_model_size(self):
         return count_parameters_in_MB(self.history)
+
+    def get_kts(self):
+        return self.kts

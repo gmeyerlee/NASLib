@@ -160,7 +160,9 @@ class Trainer(object):
                     log_every_n_seconds(logging.INFO, "Epoch {}, Anytime results: {}".format(
                             e, anytime_results), n=5)
 
-            self._log_to_json()
+            #self._log_to_json()
+            # todo: temporary. remove this later.
+            self._log_guided_experiment()
 
             self._log_and_reset_accuracies(e)
 
@@ -504,6 +506,15 @@ class Trainer(object):
                 for key in ['arch_eval', 'train_loss', 'valid_loss', 'test_loss']:
                     lightweight_dict.pop(key)
                 json.dump([self.config, lightweight_dict], file, separators=(',', ':'))
+
+
+    def _log_guided_experiment(self):
+        """log training statistics to json file"""
+        if not os.path.exists(self.config.save):
+            os.makedirs(self.config.save)
+
+        with codecs.open(os.path.join(self.config.save, 'errors.json'), 'w', encoding='utf-8') as file:
+            json.dump(self.optimizer.get_kts(), file, separators=(',', ':'))
 
 
 
