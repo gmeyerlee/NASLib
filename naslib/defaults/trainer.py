@@ -272,7 +272,7 @@ class Trainer(object):
                 search_model = os.path.join(
                     self.config.save, "search", "model_final.pth"
                 )
-            self._setup_checkpointers(search_model)  # required to load the architecture
+            self._setup_checkpointers('')  # required to load the architecture
 
             best_arch = self.optimizer.get_final_architecture()
         logger.info("Final architecture:\n" + str(convert_naslib_to_genotype(best_arch)))

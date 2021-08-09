@@ -4,8 +4,8 @@
 #SBATCH --gres=gpu:1          # reserves one GPU
 #SBATCH -o logs/naslib_darts_%x.%A-%a.%N.out       # STDOUT  %A will be replaced by the SLURM_ARRAY_JOB_ID value
 #SBATCH -e logs/naslib_darts_%x.%A-%a.%N.err       # STDERR  %A will be replaced by the SLURM_ARRAY_JOB_ID value
-#SBATCH -a 1-10 # array size
-#SBATCH -J naslib_darts
+#SBATCH -a 1-5 # array size
+#SBATCH -J NSLB_DARTS_V2_EVAL
 
 echo "Workingdir: $PWD";
 echo "Started at $(date)";
