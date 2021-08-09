@@ -8,6 +8,7 @@ from .gp import GPPredictor, SparseGPPredictor, VarSparseGPPredictor, GPWLPredic
 from .lce import LCEPredictor
 from .lce_m import LCEMPredictor
 from .lcsvr import SVR_Estimator
+from .lcnet import LCNetPredictor
 from .mlp import MLPPredictor
 from .oneshot import OneShotPredictor
 from .seminas import SemiNASPredictor
