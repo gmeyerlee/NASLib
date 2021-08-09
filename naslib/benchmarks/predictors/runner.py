@@ -11,7 +11,7 @@ DNGOPredictor, EarlyStopping, Ensemble, GCNPredictor, GPPredictor, \
 LCEPredictor, LCEMPredictor, LGBoost, MLPPredictor, NGBoost, OmniNGBPredictor, \
 OmniSemiNASPredictor, RandomForestPredictor, SVR_Estimator, SemiNASPredictor, \
 SoLosspredictor, SparseGPPredictor, VarSparseGPPredictor, XGBoost, ZeroCostV1, \
-ZeroCostV2, GPWLPredictor
+ZeroCostV2, GPWLPredictor, LCNetPredictor
 
 from naslib.search_spaces.core.query_metrics import Metric
 from naslib.search_spaces import NasBench101SearchSpace, NasBench201SearchSpace, \
@@ -40,6 +40,7 @@ supported_predictors = {
     'grad_norm': ZeroCostV2(config, batch_size=64, method_type='grad_norm'),
     'grasp': ZeroCostV2(config, batch_size=64, method_type='grasp'),
     'jacov': ZeroCostV1(config, batch_size=64, method_type='jacov'),
+    'lcnet': LCNetPredictor(metric=Metric.VAL_ACCURACY),
     'lce': LCEPredictor(metric=Metric.VAL_ACCURACY),
     'lce_m': LCEMPredictor(metric=Metric.VAL_ACCURACY),
     'lcsvr': SVR_Estimator(metric=Metric.VAL_ACCURACY, all_curve=False,
@@ -80,7 +81,7 @@ supported_predictors = {
                                              semi=True, hpo_wrapper=False,
                                              zero_cost=['jacov'], lce=[],
                                              zc_encoding='categorical'),
-    # omni ablation studies:
+    ## omni ablation studies:
     'omni_ngb_no_lce': OmniNGBPredictor(encoding_type='adjacency_one_hot',
                                         config=config, zero_cost=['jacov'], lce=[]),
     'omni_seminas_no_lce': OmniSemiNASPredictor(encoding_type='seminas', config=config,
