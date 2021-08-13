@@ -1,7 +1,7 @@
 predictors=(xgb sotle bananas \
-bayes_lin_reg var_sparse_gp)
+bayes_lin_reg var_sparse_gp rf)
 
-experiment_types=(single single single single single)
+experiment_types=(single single single single single single)
 
 start_seed=$1
 if [ -z "$start_seed" ]
