@@ -22,9 +22,6 @@ from naslib.utils.utils import get_project_root
 
 
 config = utils.get_config_from_args(config_type='predictor')
-# change seed experiment
-config.second_seed = config.seed % 5
-config.seed = config.seed // 100
 utils.set_seed(config.seed)
 logger = setup_logger(config.save + "/log.log")
 logger.setLevel(logging.INFO)
@@ -50,13 +47,13 @@ supported_predictors = {
     'lcprev': LCPrevPredictor(metric=Metric.VAL_ACCURACY),
     'lcsvr': SVR_Estimator(metric=Metric.VAL_ACCURACY, all_curve=False,
                            require_hyper=False),
-    'lgb': LGBoost(encoding_type='adjacency_one_hot', hpo_wrapper=False),
+    'lgb': LGBoost(encoding_type='adjacency_one_hot', hpo_wrapper=True),
     'mlp': MLPPredictor(encoding_type='adjacency_one_hot', hpo_wrapper=True),
     'nao': SemiNASPredictor(encoding_type='seminas', semi=False, hpo_wrapper=True),
     'ngb': NGBoost(encoding_type='adjacency_one_hot', hpo_wrapper=True),
     'params': ZeroCostBaseline(method_type='params'),
-    'rf': RandomForestPredictor(encoding_type='adjacency_one_hot', hpo_wrapper=False),
-    'seminas': SemiNASPredictor(encoding_type='seminas', semi=True, hpo_wrapper=False),
+    'rf': RandomForestPredictor(encoding_type='adjacency_one_hot', hpo_wrapper=True),
+    'seminas': SemiNASPredictor(encoding_type='seminas', semi=True, hpo_wrapper=True),
     'snip': ZeroCostV2(config, batch_size=64, method_type='snip'),
     'sotl': SoLosspredictor(metric=Metric.TRAIN_LOSS, sum_option='SoTL'),
     'sotle': SoLosspredictor(metric=Metric.TRAIN_LOSS, sum_option='SoTLE'),

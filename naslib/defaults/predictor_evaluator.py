@@ -11,7 +11,7 @@ from sklearn import metrics
 import math
 
 from naslib.search_spaces.core.query_metrics import Metric
-from naslib.utils import utils, generate_kfold, cross_validation
+from naslib.utils import generate_kfold, cross_validation
 
 logger = logging.getLogger(__name__)
 
@@ -315,10 +315,6 @@ class PredictorEvaluator(object):
         self.predictor.pre_process()
 
         logger.info("Load the test set")
-
-        # change to dataset seed for seed experiment
-        #utils.set_seed(self.config.seed)
-
         if self.uniform_random:
             test_data, arch_hash_map = self.load_dataset(load_labeled=self.load_labeled, 
                                                          data_size=self.test_size)
@@ -349,10 +345,6 @@ class PredictorEvaluator(object):
             [unlabeled_data, _, _, _], _ = self.load_dataset(load_labeled=self.load_labeled,
                                                              data_size=unlabeled_size, 
                                                              arch_hash_map=arch_hash_map)
-
-        # go back to second seed for seed experiment
-        utils.set_seed(self.config.second_seed)
-        print('1st', test_data[0][0].get_op_indices())
 
         # some of the predictors use a pre-computation step to save time in batch experiments:
         self.predictor.pre_compute(full_train_data[0], test_data[0], unlabeled_data)

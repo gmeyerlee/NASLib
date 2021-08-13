@@ -116,7 +116,7 @@ def main(args):
                 'train_size_single': args.train_size_single,
                 'fidelity_single': args.fidelity_single,
                 'fidelity_list': fidelity_list,
-                'max_hpo_time': 900,
+                'max_hpo_time': 3600,
             }
 
             with open(folder + f'/config_{args.predictor}_{i}.yaml', 'w') as fh:
@@ -178,8 +178,8 @@ if __name__ == "__main__":
     parser.add_argument("--predictor", type=str, default='full', help="which predictor")
     parser.add_argument("--test_size", type=int, default=30, help="Test set size for predictor")
     parser.add_argument("--uniform_random", type=int, default=1, help="Train/test set generation type (bool)")
-    parser.add_argument("--train_size_single", type=int, default=71, help="Train size if exp type is single")
-    parser.add_argument("--fidelity_single", type=int, default=19, help="Fidelity if exp type is single")
+    parser.add_argument("--train_size_single", type=int, default=10, help="Train size if exp type is single")
+    parser.add_argument("--fidelity_single", type=int, default=5, help="Fidelity if exp type is single")
     parser.add_argument("--dataset", type=str, default='cifar10', help="Which dataset")
     parser.add_argument("--out_dir", type=str, default='run', help="Output directory")
     parser.add_argument("--checkpoint_freq", type=int, default=5000, help="How often to checkpoint")

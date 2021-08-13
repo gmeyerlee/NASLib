@@ -11,7 +11,7 @@ class BaseGPModel(Predictor):
 
     def __init__(self, encoding_type='adjacency_one_hot',
                  ss_type='nasbench201', kernel_type=None,
-                 optimize_gp_hyper=False, num_steps=200, 
+                 optimize_gp_hyper=False, num_steps=1000, 
                  zc=False):
         super(Predictor, self).__init__()
         self.encoding_type = encoding_type
