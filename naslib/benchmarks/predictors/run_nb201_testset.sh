@@ -22,7 +22,7 @@ dataset=cifar10
 trials=100
 end_seed=$(($start_seed + $trials - 1))
 save_to_s3=true
-test_size=200
+test_size=4000
 
 # create config files
 for i in $(seq 0 $((${#predictors[@]}-1)) )

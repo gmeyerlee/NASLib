@@ -9,7 +9,6 @@ import torch
 from scipy import stats
 from sklearn import metrics
 import math
-import itertools
 
 from naslib.search_spaces.core.query_metrics import Metric
 from naslib.utils import generate_kfold, cross_validation
@@ -108,7 +107,7 @@ class PredictorEvaluator(object):
                                                dataset_api=self.dataset_api)[hp]
         return accuracy, train_time, info_dict
             
-    def load_dataset(self, load_labeled=False, data_size=10, arch_hash_map={}, full_test=False):
+    def load_dataset(self, load_labeled=False, data_size=10, arch_hash_map={}):
         """
         There are two ways to load an architecture.
         load_labeled=False: sample a random architecture from the search space.
@@ -124,57 +123,29 @@ class PredictorEvaluator(object):
         ydata = []
         info = []
         train_times = []
-        if not full_test:
-            while len(xdata) < data_size:
-
-                if not load_labeled:
-                    arch = self.search_space.clone()
-                    arch.sample_random_architecture(dataset_api=self.dataset_api)
-                else:
-                    arch = self.search_space.clone()
-                    arch.load_labeled_architecture(dataset_api=self.dataset_api)
-                    
-                arch_hash = arch.get_hash()
-                if arch_hash in arch_hash_map:
-                    continue
-                else:
-                    arch_hash_map[arch_hash] = True
-
-                accuracy, train_time, info_dict = self.get_full_arch_info(arch)
-                xdata.append(arch)
-                ydata.append(accuracy)
-                info.append(info_dict)
-                train_times.append(train_time)
-
-            return [xdata, ydata, info, train_times], arch_hash_map
-    
-        else:
-            # go through all.
-            # only works for nas-bench-201
-            # this is meant to be used just for one experiment and then reverted
-            n = 0
-            for perm in itertools.product(range(5), repeat=6):
+        while len(xdata) < data_size:
+            if len(xdata) % 1000 == 0:
+                print('n is ', len(xdata))
+            if not load_labeled:
                 arch = self.search_space.clone()
-                arch.set_op_indices(perm)
-                arch_hash = arch.get_hash()
+                arch.sample_random_architecture(dataset_api=self.dataset_api)
+            else:
+                arch = self.search_space.clone()
+                arch.load_labeled_architecture(dataset_api=self.dataset_api)
+            
+            arch_hash = arch.get_hash()
+            if arch_hash in arch_hash_map:
+                continue
+            else:
+                arch_hash_map[arch_hash] = True
+            
+            accuracy, train_time, info_dict = self.get_full_arch_info(arch)
+            xdata.append(arch)
+            ydata.append(accuracy)
+            info.append(info_dict)
+            train_times.append(train_time)
 
-                if arch_hash in arch_hash_map:
-                    print('skipped', arch_hash)
-                    continue
-                else:
-                    n += 1
-                    arch_hash_map[arch_hash] = True
-
-                accuracy, train_time, info_dict = self.get_full_arch_info(arch)
-                xdata.append(arch)
-                ydata.append(accuracy)
-                info.append(info_dict)
-                train_times.append(train_time)
-
-                if n>=4000:
-                #if n>=14624:
-                    print('n is', n)
-                    return [xdata, ydata, info, train_times], arch_hash_map
+        return [xdata, ydata, info, train_times], arch_hash_map
 
     def load_mutated_test(self, data_size=10, arch_hash_map={}):
         """
@@ -345,29 +316,27 @@ class PredictorEvaluator(object):
 
         self.predictor.pre_process()
 
-        
+        logger.info("Load the test set")
+        if self.uniform_random:
+            test_data, arch_hash_map = self.load_dataset(load_labeled=self.load_labeled, 
+                                                         data_size=self.test_size)
+        else:
+            test_data, arch_hash_map = self.load_mutated_test(data_size=self.test_size)
+            
         logger.info("Load the training set")
         max_train_size = self.train_size_single
 
         if self.experiment_type in ['vary_train_size', 'vary_both']:
             max_train_size = self.train_size_list[-1]
 
-        # for this experiment, load the train set first
         if self.uniform_random:
-            full_train_data, arch_hash_map = self.load_dataset(load_labeled=self.load_labeled,
-                                                               data_size=max_train_size)
+            full_train_data, _ = self.load_dataset(load_labeled=self.load_labeled,
+                                                   data_size=max_train_size, 
+                                                   arch_hash_map=arch_hash_map)
         else:
             full_train_data, _ = self.load_mutated_train(data_size=max_train_size, 
                                                          arch_hash_map=arch_hash_map, 
                                                          test_data=test_data)
-
-        logger.info("Load the test set")
-        if self.uniform_random:
-            test_data, _ = self.load_dataset(load_labeled=self.load_labeled, 
-                                             data_size=self.test_size, full_test=True,
-                                             arch_hash_map=arch_hash_map)
-        else:
-            test_data, arch_hash_map = self.load_mutated_test(data_size=self.test_size)
 
         # if the predictor requires unlabeled data (e.g. SemiNAS), generate it:
         reqs = self.predictor.get_data_reqs()
