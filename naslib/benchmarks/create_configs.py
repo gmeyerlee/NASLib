@@ -81,7 +81,7 @@ def main(args):
             fidelity_list.pop(2)
             fidelity_list.insert(5, 6)
 
-        if 'svr' in args.predictor:
+        if 'svr' in args.predictor or args.predictor in ['lcnet', 'lcprev']:
             train_size_list.pop(0)
             fidelity_list.pop(0)
             fidelity_list.pop(0)
@@ -96,9 +96,6 @@ def main(args):
             train_size_list.pop(-1)
             fidelity_list.pop(1)
             fidelity_list.pop(1)
-            
-        # test
-        #train_size_list = [20, 40, 60]
 
         for i in range(args.start_seed, args.start_seed + args.trials):
             config = {

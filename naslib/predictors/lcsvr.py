@@ -34,6 +34,13 @@ class SVR_Estimator(Predictor):
 
     def fit(self, xtrain, ytrain, info, learn_hyper=True):
 
+        # remove the later epochs of the train learning curves
+        # Todo: it would be better to do this inside predictor_evaluator.
+        for info_dict in info:
+            lc_related_keys = [key for key in info_dict.keys() if 'lc' in key]
+            for lc_key in lc_related_keys:
+                info_dict[lc_key] = info_dict[lc_key][:info_dict['fidelity']]
+
         # prepare training data
         xtrain_data = self.prepare_data(info)
         y_train = np.array(ytrain)

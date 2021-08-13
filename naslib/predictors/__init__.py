@@ -7,6 +7,7 @@ from .gcn import GCNPredictor
 from .gp import GPPredictor, SparseGPPredictor, VarSparseGPPredictor, GPWLPredictor
 from .lce import LCEPredictor
 from .lce_m import LCEMPredictor
+from .lcprev import LCPrevPredictor
 from .lcsvr import SVR_Estimator
 from .lcnet import LCNetPredictor
 from .mlp import MLPPredictor

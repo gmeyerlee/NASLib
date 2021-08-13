@@ -11,7 +11,7 @@ DNGOPredictor, EarlyStopping, Ensemble, GCNPredictor, GPPredictor, \
 LCEPredictor, LCEMPredictor, LGBoost, MLPPredictor, NGBoost, OmniNGBPredictor, \
 OmniSemiNASPredictor, RandomForestPredictor, SVR_Estimator, SemiNASPredictor, \
 SoLosspredictor, SparseGPPredictor, VarSparseGPPredictor, XGBoost, ZeroCostBaseline, \
-ZeroCostV1, ZeroCostV2, GPWLPredictor, LCNetPredictor
+ZeroCostV1, ZeroCostV2, GPWLPredictor, LCNetPredictor, LCPrevPredictor
 
 from naslib.search_spaces.core.query_metrics import Metric
 from naslib.search_spaces import NasBench101SearchSpace, NasBench201SearchSpace, \
@@ -44,6 +44,7 @@ supported_predictors = {
     'lcnet': LCNetPredictor(metric=Metric.VAL_ACCURACY),
     'lce': LCEPredictor(metric=Metric.VAL_ACCURACY),
     'lce_m': LCEMPredictor(metric=Metric.VAL_ACCURACY),
+    'lcprev': LCPrevPredictor(metric=Metric.VAL_ACCURACY),
     'lcsvr': SVR_Estimator(metric=Metric.VAL_ACCURACY, all_curve=False,
                            require_hyper=False),
     'lgb': LGBoost(encoding_type='adjacency_one_hot', hpo_wrapper=True),

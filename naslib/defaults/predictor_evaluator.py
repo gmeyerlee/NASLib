@@ -252,10 +252,10 @@ class PredictorEvaluator(object):
             """
             train_info = copy.deepcopy(train_info)
             test_info = copy.deepcopy(test_info)
+            
+            # add fidelity so that the predictor can remove later epochs if necessary
             for info_dict in train_info:
-                lc_related_keys = [key for key in info_dict.keys() if 'lc' in key]
-                for lc_key in lc_related_keys:
-                    info_dict[lc_key] = info_dict[lc_key][:fidelity]
+                info_dict['fidelity'] = fidelity
 
             for info_dict in test_info:
                 lc_related_keys = [key for key in info_dict.keys() if 'lc' in key]

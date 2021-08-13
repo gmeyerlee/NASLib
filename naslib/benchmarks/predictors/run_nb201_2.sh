@@ -1,5 +1,5 @@
-predictors=(flops params)
-experiment_types=(single single)
+predictors=(lcprev)
+experiment_types=(vary_both)
 
 start_seed=$1
 if [ -z "$start_seed" ]
@@ -9,7 +9,7 @@ fi
 
 # folders:
 base_file=NASLib/naslib
-s3_folder=p201_baselines_aug7
+s3_folder=p201_lcprev_aug12
 out_dir=$s3_folder\_$start_seed
 
 # search space / data:
