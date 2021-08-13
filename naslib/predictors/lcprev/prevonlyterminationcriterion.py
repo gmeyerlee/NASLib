@@ -142,7 +142,7 @@ class TerminationCriterion(object):
         f_p = f_ps[0:min_len]
         f_c_max = max(f_cs)
         a_b_losses = []
-        for i in range(int(2*n)):
+        for i in range(int(3*n)):
             a_b_loss = gradient_descent(f_c, f_p, return_loss=True,
                                         recency_weighting=self.recency_weighting)
             if self.monotonicity_condition is True:

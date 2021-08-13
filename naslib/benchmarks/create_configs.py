@@ -96,6 +96,11 @@ def main(args):
             train_size_list.pop(-1)
             fidelity_list.pop(1)
             fidelity_list.pop(1)
+            
+        # todo: delete later
+        if args.predictor == 'lcprev':
+            train_size_list = [8, 14, 42, 121, 347, 589]
+            fidelity_list = [3, 7, 13, 26, 52, 102]
 
         for i in range(args.start_seed, args.start_seed + args.trials):
             config = {

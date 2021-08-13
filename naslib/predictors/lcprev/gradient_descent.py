@@ -27,7 +27,7 @@ def recency_weights(num):
 
 def gradient_descent(f_cs, f_ps,
                      alpha=0.01,
-                     N=100,
+                     N=50,
                      lambda_1=0,
                      lambda_2=100,
                      lambda_3=1,

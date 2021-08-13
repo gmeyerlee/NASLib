@@ -55,14 +55,14 @@ class LCPrevPredictor(Predictor):
                 """
                 term_crit = ConservativeTerminationCriterion(
                     lc, final_epoch,
-                    prob_x_greater_type='posterior_prob_x_greater_than',
                     y_prev_list=self.train_lcs,
-                    predictive_std_threshold=.005,
+                    prob_x_greater_type=None,
                     min_y_prev=2,
                     recency_weighting=True,
-                    monotonicity_condition=False)
+                    monotonicity_condition=False, 
+                    n=15)
 
-                result = term_crit.run(default_guess, threshold=.05)
+                result = term_crit.predict()
                 prediction = result['predictive_mean'] * 100
 
             except AssertionError:
