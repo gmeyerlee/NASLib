@@ -1,11 +1,11 @@
-predictors=(xgb)
 
-predictors=(jacov synflow \
+
+predictors=(lcsvr xgb jacov synflow \
 sotl sotle valacc valloss \
-lcsvr omni_ngb \
-bananas bonas gcn nao \
-lgb ngb rf xgb \
+bananas bonas gcn \
+ngb \
 bayes_lin_reg bohamiann var_sparse_gp)
+
 
 experiment_types=(single single \
 single single single single \

@@ -316,8 +316,8 @@ class PredictorEvaluator(object):
 
         logger.info("Load the test set")
 
-        # change to second seed for seed experiment
-        utils.set_seed(self.config.second_seed)
+        # change to dataset seed for seed experiment
+        #utils.set_seed(self.config.seed)
 
         if self.uniform_random:
             test_data, arch_hash_map = self.load_dataset(load_labeled=self.load_labeled, 
@@ -350,8 +350,8 @@ class PredictorEvaluator(object):
                                                              data_size=unlabeled_size, 
                                                              arch_hash_map=arch_hash_map)
 
-        # go back to original seed for seed experiment
-        utils.set_seed(self.config.seed)
+        # go back to second seed for seed experiment
+        utils.set_seed(self.config.second_seed)
         print('1st', test_data[0][0].get_op_indices())
 
         # some of the predictors use a pre-computation step to save time in batch experiments:
