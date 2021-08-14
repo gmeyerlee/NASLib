@@ -62,15 +62,15 @@ def default_argument_parser():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    parser.add_argument(
-        "--config-file",
-        default="{}/benchmarks/predictors/predictor_config.yaml".format(
-            get_project_root()
-        ),
-        metavar="FILE",
-        help="path to config file",
-    )
-    # parser.add_argument("--config-file", default="{}/defaults/darts_defaults.yaml".format(get_project_root()), metavar="FILE", help="path to config file")
+    # parser.add_argument(
+    #     "--config-file",
+    #     default="{}/benchmarks/predictors/predictor_config.yaml".format(
+    #         get_project_root()
+    #     ),
+    #     metavar="FILE",
+    #     help="path to config file",
+    # )
+    parser.add_argument("--config-file", default="{}/defaults/darts_defaults.yaml".format(get_project_root()), metavar="FILE", help="path to config file")
     parser.add_argument(
         "--eval-only", action="store_true", help="perform evaluation only"
     )
@@ -113,6 +113,12 @@ def default_argument_parser():
         help="Modify config options using the command-line",
         default=None,
         nargs=argparse.REMAINDER,
+    )
+    parser.add_argument(
+        "--search-space", default="darts", type=str,
+    )
+    parser.add_argument(
+        "--optimizer", default="darts", type=str,
     )
     return parser
 
@@ -202,6 +208,9 @@ def get_config_from_args(args=None, config_type="nas"):
         config.eval_only = args.eval_only
         config.resume = args.resume
         config.model_path = args.model_path
+        config.search_space = args.search_space
+        config.optimizer = args.optimizer
+
         if config_type != "nas_predictor":
             config.seed = args.seed
 
