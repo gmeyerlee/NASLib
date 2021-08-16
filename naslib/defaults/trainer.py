@@ -198,7 +198,10 @@ class Trainer(object):
                 after_epoch(e)
 
         self.optimizer.after_training()
-        summary_writer.close()
+
+        if summary_writer is not None:
+            summary_writer.close()
+
         logger.info("Training finished")
 
     def evaluate_oneshot(self, resume_from="", dataloader=None):
