@@ -40,8 +40,17 @@ class Trainer(object):
         """
         self.optimizer = optimizer
         self.config = config
-        self.epochs = self.config.search.epochs
         self.lightweight_output = lightweight_output
+        self.n_process = 512
+
+        # anytime
+        computed_epochs = self.optimizer.compute_epochs()
+        self.budgets = self.config.search.budgets
+        self.search_time = 0
+        if computed_epochs is not None:
+            self.epochs, self.rounds = computed_epochs
+        else:
+            self.epochs = config.search.epochs
 
         # preparations
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -66,6 +75,8 @@ class Trainer(object):
              'runtime': [],
              'train_time': [],
              'arch_eval': [],
+             'latest_arch': [],
+             'latest_acc': [],
              'params': n_parameters}
         )
 
@@ -93,78 +104,155 @@ class Trainer(object):
             start_epoch = self._setup_checkpointers(resume_from, period=checkpoint_freq, scheduler=self.scheduler)
         else:
             start_epoch = self._setup_checkpointers(resume_from, period=checkpoint_freq)
-        
+
         if self.optimizer.using_step_function:
             self.train_queue, self.valid_queue, _ = self.build_search_dataloaders(self.config)
 
-        for e in range(start_epoch, self.epochs):
-            
-            start_time = time.time()
-            self.optimizer.new_epoch(e)
+        if type(self.epochs) is list:
+            for i in range(self.n_process):
+                for epochs, round in zip(self.epochs, self.rounds):
+                    for e in range(start_epoch, sum(epochs)):
+                        start_time = time.time()
+                        self.optimizer.new_epoch(e, round, i)
 
-            if self.optimizer.using_step_function:
-                for step, data_train in enumerate(self.train_queue):
-                    data_train = (data_train[0].to(self.device), data_train[1].to(self.device, non_blocking=True))
-                    data_val = next(iter(self.valid_queue))
-                    data_val = (data_val[0].to(self.device), data_val[1].to(self.device, non_blocking=True))
+                        if self.optimizer.using_step_function:
+                            for step, data_train in enumerate(self.train_queue):
+                                data_train = (
+                                    data_train[0].to(self.device), data_train[1].to(self.device, non_blocking=True))
+                                data_val = next(iter(self.valid_queue))
+                                data_val = (data_val[0].to(self.device), data_val[1].to(self.device, non_blocking=True))
 
-                    stats = self.optimizer.step(data_train, data_val)
-                    logits_train, logits_val, train_loss, val_loss = stats
+                                stats = self.optimizer.step(data_train, data_val)
+                                logits_train, logits_val, train_loss, val_loss = stats
 
-                    self._store_accuracies(logits_train, data_train[1], 'train')
-                    self._store_accuracies(logits_val, data_val[1], 'val')
+                                self._store_accuracies(logits_train, data_train[1], 'train')
+                                self._store_accuracies(logits_val, data_val[1], 'val')
 
-                    log_every_n_seconds(logging.INFO, "Epoch {}-{}, Train loss: {:.5f}, validation loss: {:.5f}, learning rate: {}".format(
-                        e, step, train_loss, val_loss, self.scheduler.get_last_lr()), n=5)
-                    
-                    if torch.cuda.is_available():
-                        log_first_n(logging.INFO, "cuda consumption\n {}".format(torch.cuda.memory_summary()), n=3)
+                                log_every_n_seconds(logging.INFO,
+                                                    "Round {}: Epoch {}-{}, Train loss: {:.5f}, validation loss: {:.5f}, learning rate: {}".format(
+                                                        round, e, step, train_loss, val_loss, self.scheduler.get_last_lr()), n=5)
 
-                    self.train_loss.update(float(train_loss.detach().cpu()))
-                    self.val_loss.update(float(val_loss.detach().cpu()))
-                    
-                self.scheduler.step()
+                                if torch.cuda.is_available():
+                                    log_first_n(logging.INFO, "cuda consumption\n {}".format(torch.cuda.memory_summary()),
+                                                n=3)
 
-                end_time = time.time()
+                                self.train_loss.update(float(train_loss.detach().cpu()))
+                                self.val_loss.update(float(val_loss.detach().cpu()))
 
-                self.errors_dict.train_acc.append(self.train_top1.avg)
-                self.errors_dict.train_loss.append(self.train_loss.avg)
-                self.errors_dict.valid_acc.append(self.val_top1.avg)
-                self.errors_dict.valid_loss.append(self.val_loss.avg)
-                self.errors_dict.runtime.append(end_time - start_time)
-            else:
-                end_time = time.time()
-                # TODO: nasbench101 does not have train_loss, valid_loss, test_loss implemented, so this is a quick fix for now
-                #train_acc, train_loss, valid_acc, valid_loss, test_acc, test_loss = self.optimizer.train_statistics()
-                train_acc, valid_acc, test_acc, train_time = self.optimizer.train_statistics()
-                train_loss, valid_loss, test_loss = -1, -1, -1
-                
-                self.errors_dict.train_acc.append(train_acc)
-                self.errors_dict.train_loss.append(train_loss)
-                self.errors_dict.valid_acc.append(valid_acc)
-                self.errors_dict.valid_loss.append(valid_loss)
-                self.errors_dict.test_acc.append(test_acc)
-                self.errors_dict.test_loss.append(test_loss)
-                self.errors_dict.runtime.append(end_time - start_time)
-                self.errors_dict.train_time.append(train_time)
-                self.train_top1.avg = train_acc
-                self.val_top1.avg = valid_acc
+                            self.scheduler.step()
 
-            self.periodic_checkpointer.step(e)
+                            end_time = time.time()
 
-            anytime_results = self.optimizer.test_statistics()
-            if anytime_results:
-                # record anytime performance
-                self.errors_dict.arch_eval.append(anytime_results)
-                log_every_n_seconds(logging.INFO, "Epoch {}, Anytime results: {}".format(
-                        e, anytime_results), n=5)
+                            self.errors_dict.train_acc.append(self.train_top1.avg)
+                            self.errors_dict.train_loss.append(self.train_loss.avg)
+                            self.errors_dict.valid_acc.append(self.val_top1.avg)
+                            self.errors_dict.valid_loss.append(self.val_loss.avg)
+                            self.errors_dict.runtime.append(end_time - start_time)
+                        else:
+                            end_time = time.time()
+                            # TODO: nasbench101 does not have train_loss, valid_loss, test_loss implemented, so this is a quick fix for now
+                            # train_acc, train_loss, valid_acc, valid_loss, test_acc, test_loss = self.optimizer.train_statistics()
+                            train_acc, valid_acc, test_acc, train_time = self.optimizer.train_statistics()
+                            train_loss, valid_loss, test_loss = -1, -1, -1
 
-            self._log_to_json()
+                            self.errors_dict.train_acc.append(train_acc)
+                            self.errors_dict.train_loss.append(train_loss)
+                            self.errors_dict.valid_acc.append(valid_acc)
+                            self.errors_dict.valid_loss.append(valid_loss)
+                            self.errors_dict.test_acc.append(test_acc)
+                            self.errors_dict.test_loss.append(test_loss)
+                            self.errors_dict.runtime.append(end_time - start_time)
+                            self.errors_dict.train_time.append(train_time)
+                            self.train_top1.avg = train_acc
+                            self.val_top1.avg = valid_acc
+                            self.search_time += end_time - start_time
+                            self.search_time += train_time
 
-            self._log_and_reset_accuracies(e)
+                        self.periodic_checkpointer.step(e)
 
-        self.optimizer.after_training()
-        logger.info("Training finished")
+                        anytime_results = self.optimizer.test_statistics()
+                        if anytime_results:
+                           # record anytime performance
+                            self.errors_dict.arch_eval.append(anytime_results)
+                            log_every_n_seconds(logging.INFO, "Round {} Epoch {}, Anytime results: {}".format(
+                                round, e, anytime_results), n=5)
+
+                        self._log_to_json()
+                        self._log_and_reset_accuracies(e, round, i)
+                        if self.search_time > self.budgets:
+                            return
+
+                    self.optimizer.after_training()
+        else:
+            for e in range(start_epoch, self.epochs):
+                start_time = time.time()
+                self.optimizer.new_epoch(e)
+                if self.optimizer.using_step_function:
+                    for step, data_train in enumerate(self.train_queue):
+                        data_train = (data_train[0].to(self.device), data_train[1].to(self.device, non_blocking=True))
+                        data_val = next(iter(self.valid_queue))
+                        data_val = (data_val[0].to(self.device), data_val[1].to(self.device, non_blocking=True))
+
+                        stats = self.optimizer.step(data_train, data_val)
+                        logits_train, logits_val, train_loss, val_loss = stats
+
+                        self._store_accuracies(logits_train, data_train[1], 'train')
+                        self._store_accuracies(logits_val, data_val[1], 'val')
+
+                        log_every_n_seconds(logging.INFO, "Epoch {}-{}, Train loss: {:.5f}, validation loss: {:.5f}, learning rate: {}".format(
+                            e, step, train_loss, val_loss, self.scheduler.get_last_lr()), n=5)
+
+                        if torch.cuda.is_available():
+                            log_first_n(logging.INFO, "cuda consumption\n {}".format(torch.cuda.memory_summary()), n=3)
+
+                        self.train_loss.update(float(train_loss.detach().cpu()))
+                        self.val_loss.update(float(val_loss.detach().cpu()))
+
+                    self.scheduler.step()
+
+                    end_time = time.time()
+
+                    self.errors_dict.train_acc.append(self.train_top1.avg)
+                    self.errors_dict.train_loss.append(self.train_loss.avg)
+                    self.errors_dict.valid_acc.append(self.val_top1.avg)
+                    self.errors_dict.valid_loss.append(self.val_loss.avg)
+                    self.errors_dict.runtime.append(end_time - start_time)
+                else:
+                    end_time = time.time()
+                    # TODO: nasbench101 does not have train_loss, valid_loss, test_loss implemented, so this is a quick fix for now
+                    #train_acc, train_loss, valid_acc, valid_loss, test_acc, test_loss = self.optimizer.train_statistics()
+                    train_acc, valid_acc, test_acc, train_time = self.optimizer.train_statistics()
+                    train_loss, valid_loss, test_loss = -1, -1, -1
+
+                    self.errors_dict.train_acc.append(train_acc)
+                    self.errors_dict.train_loss.append(train_loss)
+                    self.errors_dict.valid_acc.append(valid_acc)
+                    self.errors_dict.valid_loss.append(valid_loss)
+                    self.errors_dict.test_acc.append(test_acc)
+                    self.errors_dict.test_loss.append(test_loss)
+                    self.errors_dict.runtime.append(end_time - start_time)
+                    self.errors_dict.train_time.append(train_time)
+                    self.train_top1.avg = train_acc
+                    self.val_top1.avg = valid_acc
+                    self.search_time += end_time - start_time
+                    self.search_time += train_time
+
+                self.periodic_checkpointer.step(e)
+
+                anytime_results = self.optimizer.test_statistics()
+                if anytime_results:
+                    # record anytime performance
+                    self.errors_dict.arch_eval.append(anytime_results)
+                    log_every_n_seconds(logging.INFO, "Epoch {}, Anytime results: {}".format(
+                            e, anytime_results), n=5)
+
+                self._log_to_json()
+                self._log_and_reset_accuracies(e)
+                if self.search_time > self.budgets:
+                    return
+
+            self.optimizer.after_training()
+        logger.info("Training finished. Total Budgets[s]: {}".format(self.search_time))
 
 
     def evaluate_oneshot(self, resume_from="", dataloader=None):
@@ -241,7 +329,7 @@ class Trainer(object):
                 search_model = os.path.join(self.config.save, "search", "model_final.pth")
             self._setup_checkpointers(search_model)      # required to load the architecture
 
-            best_arch = self.optimizer.get_final_architecture()
+            best_arch, _ = self.optimizer.get_final_architecture()
         logger.info("Final architecture:\n" + best_arch.modules_str())
 
         if best_arch.QUERYABLE:
@@ -409,11 +497,29 @@ class Trainer(object):
         )
 
 
-    def _log_and_reset_accuracies(self, epoch):
-        logger.info("Epoch {} done. Train accuracy (top1, top5): {:.5f}, {:.5f}, Validation accuracy: {:.5f}, {:.5f}".format(
+    def _log_and_reset_accuracies(self, epoch, *args):
+        if args:
+            r, i = args[0], args[1]
+            logger.info("Process: {}, Round {} Epoch {} done. Train accuracy (top1): {:.5f}, Validation accuracy: {:.5f}, Query time: {:.5f}, Training time: {:.5f}, Accumulated time: {:.5f}".format(
+                i,
+                r,
                 epoch,
-                self.train_top1.avg, self.train_top5.avg,
-                self.val_top1.avg, self.val_top5.avg
+                self.train_top1.avg,
+                self.val_top1.avg,
+                self.errors_dict['runtime'][-1],
+                self.errors_dict['train_time'][-1],
+                sum(self.errors_dict['runtime']) +
+                sum(self.errors_dict['train_time'])
+            ))
+        else:
+            logger.info("Epoch {} done. Train accuracy (top1): {:.5f}, Validation accuracy: {:.5f}, Query time: {:.5f}, Training time: {:.5f}, Accumulated time: {:.5f}".format(
+                epoch,
+                self.train_top1.avg,
+                self.val_top1.avg,
+                self.errors_dict['runtime'][-1],
+                self.errors_dict['train_time'][-1],
+                sum(self.errors_dict['runtime']) +
+                sum(self.errors_dict['train_time']),
             ))
         self.train_top1.reset()
         self.train_top5.reset()
@@ -479,8 +585,8 @@ class Trainer(object):
         self.periodic_checkpointer = PeriodicCheckpointer(
             checkpointer,
             period=period,
-            max_iter=self.config.search.epochs if search else self.config.evaluation.epochs
-        )
+            max_iter=1)
+        #max_iter=self.config.search.epochs if search else self.config.evaluation.epochs
 
         if resume_from:
             logger.info("loading model from file {}".format(resume_from))
@@ -503,7 +609,3 @@ class Trainer(object):
                 for key in ['arch_eval', 'train_loss', 'valid_loss', 'test_loss']:
                     lightweight_dict.pop(key)
                 json.dump([self.config, lightweight_dict], file, separators=(',', ':'))
-
-
-
-    
