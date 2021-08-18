@@ -56,6 +56,7 @@ supported_predictors = {
     'seminas': SemiNASPredictor(encoding_type='seminas', semi=True, hpo_wrapper=True),
     'snip': ZeroCostV2(config, batch_size=64, method_type='snip'),
     'sotl': SoLosspredictor(metric=Metric.TRAIN_LOSS, sum_option='SoTL'),
+    'sovl': SoLosspredictor(metric=Metric.VAL_LOSS, sum_option='SoTL'),
     'sotle': SoLosspredictor(metric=Metric.TRAIN_LOSS, sum_option='SoTLE'),
     'sotlema': SoLosspredictor(metric=Metric.TRAIN_LOSS, sum_option='SoTLEMA'),
     'sparse_gp': SparseGPPredictor(encoding_type='adjacency_one_hot',
