@@ -98,9 +98,10 @@ def main(args):
             fidelity_list.pop(1)
             
         # todo: delete later
-        if args.predictor == 'lcprev':
-            train_size_list = [8, 14, 42, 121, 347, 589]
-            fidelity_list = [3, 7, 13, 26, 52, 102]
+        if args.predictor in ['blr_loss', 'blr_acc']:
+            train_size_list = [42, 71, 121, 205, 347, 589]
+            fidelity_list = [9, 13, 19, 26, 37, 52]
+
 
         for i in range(args.start_seed, args.start_seed + args.trials):
             config = {

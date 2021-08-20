@@ -14,6 +14,7 @@ from scipy import stats
 import numpy as np
 
 from naslib.search_spaces.core.query_metrics import Metric
+from naslib.predictors.utils.encodings import encode
 
 def loguniform(low=0, high=1, size=None):
     return np.exp(np.random.uniform(np.log(low), np.log(high), size))
@@ -43,6 +44,11 @@ class SVR_Estimator(Predictor):
 
         # prepare training data
         xtrain_data = self.prepare_data(info)
+        
+        # adding arch info
+        xdata_encoded = np.array([encode(arch, encoding_type='adjacency_one_hot',
+                                         ss_type=self.ss_type) for arch in xtrain])
+        xtrain_data = np.array([[*x, *xdata_encoded[i]] for i, x in enumerate(xtrain_data)])
         y_train = np.array(ytrain)
         
         # learn hyperparameters of the extrapolator by cross validation
@@ -155,6 +161,12 @@ class SVR_Estimator(Predictor):
 
     def query(self, xtest, info):
         data = self.prepare_data(info)
+        
+        # adding arch info
+        xdata_encoded = np.array([encode(arch, encoding_type='adjacency_one_hot',
+                                         ss_type=self.ss_type) for arch in xtest])
+        data = [[*x, *xdata_encoded[i]] for i, x in enumerate(data)]
+
         pred_on_test_set = self.best_model.predict(data)        
         return pred_on_test_set
     

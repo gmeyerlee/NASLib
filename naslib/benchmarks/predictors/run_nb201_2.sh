@@ -1,5 +1,5 @@
-predictors=(sovl fisher synflow)
-experiment_types=(single single single)
+predictors=(blr_loss blr_acc)
+experiment_types=(vary_both vary_both)
 
 start_seed=$1
 if [ -z "$start_seed" ]
@@ -9,7 +9,7 @@ fi
 
 # folders:
 base_file=NASLib/naslib
-s3_folder=p201_reproduce_aug18
+s3_folder=p201_blr_aug19
 out_dir=$s3_folder\_$start_seed
 
 # search space / data:
@@ -20,7 +20,7 @@ dataset=cifar10
 trials=100
 end_seed=$(($start_seed + $trials - 1))
 save_to_s3=true
-test_size=1000
+test_size=200
 
 # create config files
 for i in $(seq 0 $((${#predictors[@]}-1)) )
