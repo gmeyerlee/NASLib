@@ -1,6 +1,6 @@
 import logging
 from naslib.defaults.trainer import Trainer
-from naslib.optimizers import Hyperband, BOHBSimple
+from naslib.optimizers import BOHBSimple
 from naslib.search_spaces import NasBench201SearchSpace, NasBench101SearchSpace
 
 from naslib.utils import set_seed, setup_logger, get_config_from_args, get_dataset_api
