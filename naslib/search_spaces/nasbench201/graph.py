@@ -218,6 +218,35 @@ class NasBench201SearchSpace(Graph):
         op_indices = np.random.randint(5, size=(6))
         self.set_op_indices(op_indices)
 
+    def model_based_sample_architecture(self, dataset_api=None, minimize_me=None, good_kde=None, vartypes=None):
+        """
+        This will perform a model-based architecture sampling and update the edges in the
+        naslib object accordingly.
+        """
+        num_samples = 128
+        random_fraction = 0.33
+        best = np.inf
+        best_vector = None
+        for i in range(num_samples):
+            idx = np.random.randint(0, len(good_kde.data))
+            datum = good_kde.data[idx]
+            vector = []
+            for m, bw, t in zip(datum, good_kde.bw, vartypes):
+                if np.random.rand() < (1 - bw):
+                    vector.append(int(m))
+                else:
+                    vector.append(np.random.randint(t))
+            val = minimize_me(vector)
+            if val < best:
+                best = val
+                best_vector = vector
+        if best_vector is None or np.random.rand() < random_fraction:
+            self.sample_random_architecture(dataset_api=dataset_api)
+        else:
+            for i in range(len(best_vector)):
+                best_vector[i] = int(np.rint(best_vector[i]))
+            self.set_op_indices(best_vector)
+
     def mutate(self, parent, dataset_api=None):
         """
         This will mutate one op from the parent op indices, and then
