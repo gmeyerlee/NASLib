@@ -44,7 +44,9 @@ class Trainer(object):
         self.n_process = 512
 
         # anytime
-        computed_epochs = self.optimizer.compute_epochs()
+        computed_epochs = None
+        if self.config.optimizer == 'bohb_simple':
+            computed_epochs = self.optimizer.compute_epochs()
         self.budgets = self.config.search.budgets
         self.search_time = 0
         if computed_epochs is not None:
