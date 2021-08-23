@@ -17,7 +17,7 @@ start=`date +%s`
 source /home/krishnan/miniconda3/bin/activate
 conda activate naslib
 
-python run_optimizer.py --seed $SLURM_ARRAY_TASK_ID --optimizer $1 --search-space nasbench201
+python run_optimizer.py --seed $SLURM_ARRAY_TASK_ID --optimizer $1 --search-space nasbench101
 
 end=`date +%s`
 runtime=$((end-start))

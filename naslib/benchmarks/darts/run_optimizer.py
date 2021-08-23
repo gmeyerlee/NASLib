@@ -7,9 +7,10 @@ from naslib.optimizers import (
     GDASOptimizer,
     DrNASOptimizer,
 )
-from naslib.search_spaces import DartsSearchSpace, NasBench201SearchSpace
+from naslib.search_spaces import NasBench101SearchSpace, NasBench201SearchSpace, DartsSearchSpace
 from naslib.search_spaces.core.query_metrics import Metric
 from naslib.search_spaces.nasbench201.conversions import convert_naslib_to_str
+from naslib.search_spaces.nasbench101.conversions import convert_naslib_to_spec
 from naslib.utils import utils, setup_logger, get_dataset_api
 
 from torch.utils.tensorboard import SummaryWriter
@@ -33,11 +34,13 @@ supported_optimizers = {
 }
 
 supported_search_spaces = {
+    "nasbench101": NasBench101SearchSpace(),
     "nasbench201": NasBench201SearchSpace(),
 }
 
 supported_conversions = {
-    "nasbench201": convert_naslib_to_str
+    "nasbench101": convert_naslib_to_spec,
+    "nasbench201": convert_naslib_to_str,
 }
 
 search_space = supported_search_spaces[config.search_space]
@@ -57,13 +60,17 @@ def log_discrete_arch(epoch):
 
 trainer = Trainer(optimizer, config)
 trainer.search(
-    resume_from=utils.get_last_checkpoint(config) if config.resume else "",
-    summary_writer=writer,
-    after_epoch=log_discrete_arch
+   resume_from=utils.get_last_checkpoint(config) if config.resume else "",
+   summary_writer=writer,
+   after_epoch=log_discrete_arch
 )
 
 # Log the final architecture and test accuracy
 best_arch = optimizer.get_final_architecture()
 results = best_arch.query(metric=Metric.TEST_ACCURACY, dataset=config.dataset, dataset_api=dataset_api)
-logger.info(f'Test accuracy of final architecture (queried from benchmark): {results}')
+logger.info(f'Test accuracy of optimizer.get_final_architecture() (queried from benchmark): {results}')
+logger.info(f'Best architecture found: {supported_conversions[config.search_space](best_arch)}')
+
+results = optimizer.graph.query(metric=Metric.TEST_ACCURACY, dataset=config.dataset, dataset_api=dataset_api)
+logger.info(f'Test accuracy of optimizer.graph (queried from benchmark): {results}')
 logger.info(f'Best architecture found: {supported_conversions[config.search_space](best_arch)}')
