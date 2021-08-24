@@ -58,7 +58,7 @@ supported_predictors = {
     "bonas": BonasPredictor(encoding_type="bonas", hpo_wrapper=True),
     "dngo": DNGOPredictor(encoding_type="adjacency_one_hot"),
     "fisher": ZeroCostV2(config, batch_size=64, method_type="fisher"),
-    "gcn": GCNPredictor(encoding_type="gcn", hpo_wrapper=True),
+    "gcn": GCNPredictor(encoding_type="gcn", hpo_wrapper=False),
     "gp": GPPredictor(encoding_type="adjacency_one_hot"),
     "gpwl": GPWLPredictor(
         ss_type=config.search_space,
@@ -69,6 +69,7 @@ supported_predictors = {
     "grad_norm": ZeroCostV2(config, batch_size=64, method_type="grad_norm"),
     "grasp": ZeroCostV2(config, batch_size=64, method_type="grasp"),
     "jacov": ZeroCostV1(config, batch_size=64, method_type="jacov"),
+    "jacov_v2": ZeroCostV2(config, batch_size=64, method_type="jacov"),
     "lce": LCEPredictor(metric=Metric.VAL_ACCURACY),
     "lce_m": LCEMPredictor(metric=Metric.VAL_ACCURACY),
     "lcsvr": SVR_Estimator(

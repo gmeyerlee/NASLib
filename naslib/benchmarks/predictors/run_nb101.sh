@@ -1,14 +1,6 @@
-predictors=(fisher grad_norm grasp jacov snip synflow \
-bananas bonas gcn mlp nao seminas \
-lgb ngb rf xgb \
-bayes_lin_reg bohamiann dngo \
-gp sparse_gp var_sparse_gp)
+predictors=(jacov_v2 seminas gcn xgb)
 
-experiment_types=(single single single single single single \
-vary_train_size vary_train_size vary_train_size vary_train_size vary_train_size vary_train_size \
-vary_train_size vary_train_size vary_train_size vary_train_size \
-vary_train_size vary_train_size vary_train_size \
-vary_train_size vary_train_size vary_train_size)
+experiment_types=(single vary_train_size vary_train_size vary_train_size)
 
 start_seed=$1
 if [ -z "$start_seed" ]
@@ -17,7 +9,7 @@ then
 fi
 
 # folders:
-base_file=NASLib/naslib
+base_file=/home/zabergjg/NASLib/naslib
 s3_folder=p101
 out_dir=$s3_folder\_$start_seed
 
@@ -26,9 +18,9 @@ search_space=nasbench101
 dataset=cifar10
 
 # other variables:
-trials=100
+trials=50
 end_seed=$(($start_seed + $trials - 1))
-save_to_s3=true
+save_to_s3=false
 test_size=200
 
 # create config files

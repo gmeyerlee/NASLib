@@ -19,7 +19,7 @@ dataset=cifar10
 # other variables:
 trials=1
 end_seed=$(($start_seed + $trials - 1))
-save_to_s3=true
+save_to_s3=false
 test_size=10
 
 # create config files

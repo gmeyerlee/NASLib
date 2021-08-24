@@ -1,18 +1,6 @@
-predictors=(fisher grad_norm grasp jacov snip synflow \
-lce lce_m sotl sotle valacc valloss \
-lcsvr omni_ngb omni_seminas \
-bananas bonas gcn mlp nao seminas \
-lgb ngb rf xgb \
-bayes_lin_reg bohamiann dngo \
-gp sparse_gp var_sparse_gp)
+predictors=(sotle lcsvr seminas xgb gcn bohamiann)
 
-experiment_types=(single single single single single single \
-vary_fidelity vary_fidelity vary_fidelity vary_fidelity vary_fidelity vary_fidelity \
-vary_both vary_both vary_both \
-vary_train_size vary_train_size vary_train_size vary_train_size vary_train_size vary_train_size \
-vary_train_size vary_train_size vary_train_size vary_train_size \
-vary_train_size vary_train_size vary_train_size \
-vary_train_size vary_train_size vary_train_size)
+experiment_types=(vary_fidelity vary_both vary_train_size vary_train_size vary_train_size vary_train_size)
 
 start_seed=$1
 if [ -z "$start_seed" ]
@@ -21,18 +9,18 @@ then
 fi
 
 # folders:
-base_file=NASLib/naslib
+base_file=/home/zabergjg/NASLib/naslib
 s3_folder=p201_im
 out_dir=$s3_folder\_$start_seed
 
 # search space / data:
 search_space=nasbench201
-dataset=ImageNet16-120
+dataset=cifar10
 
 # other variables:
 trials=100
 end_seed=$(($start_seed + $trials - 1))
-save_to_s3=true
+save_to_s3=false
 test_size=200
 
 # create config files

@@ -2,24 +2,23 @@ predictors=(sotle lcsvr seminas xgb gcn bohamiann)
 
 experiment_types=(vary_fidelity vary_both vary_train_size vary_train_size vary_train_size vary_train_size)
 
-
 start_seed=$1
 if [ -z "$start_seed" ]
 then
-    start_seed=0
+    start_seed=60
 fi
 
 # folders:
-base_file=NASLib/naslib
-s3_folder=pnlp
+base_file=/home/zabergjg/NASLib/naslib
+s3_folder=p301
 out_dir=$s3_folder\_$start_seed
 
 # search space / data:
-search_space=nlp
-dataset=ptb
+search_space=darts
+dataset=cifar10
 
 # other variables:
-trials=100
+trials=20
 end_seed=$(($start_seed + $trials - 1))
 save_to_s3=false
 test_size=200
@@ -43,7 +42,7 @@ do
         echo ================running $predictor trial: $t =====================
         python $base_file/benchmarks/predictors/runner.py --config-file $config_file
     done
-    if [ "$save_to_s3" ]
+    if [ "$save_to_s3" = true ]
     then
         # zip and save to s3
         echo zipping and saving to s3
