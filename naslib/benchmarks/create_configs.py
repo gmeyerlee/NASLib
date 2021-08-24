@@ -69,6 +69,12 @@ def main(args):
         elif args.search_space == "nlp":
             total_epochs = 50 - 1
             max_train_size = 1000
+        elif args.search_space == "transbench101":
+            total_epochs = 10
+            max_train_size = 1000
+        elif args.search_spaze == "asr":
+            # total_epochs = 
+            max_train_size = 1000
 
         train_size_list = [
             int(j)
@@ -81,16 +87,19 @@ def main(args):
             )
         ]
         # train_size_list = [i for i in train_size_list if i < 230]
-        fidelity_list = [
-            int(j)
-            for j in np.logspace(
-                start=0.9,
-                stop=np.log(total_epochs) / np.log(2),
-                num=15,
-                endpoint=True,
-                base=2.0,
-            )
-        ]
+        if args.search_space == "transbench101" and total_epochs == 10:
+            fidelity_list = list(range(1, 11))
+        else:
+            fidelity_list = [
+                int(j)
+                for j in np.logspace(
+                    start=0.9,
+                    stop=np.log(total_epochs) / np.log(2),
+                    num=15,
+                    endpoint=True,
+                    base=2.0,
+                )
+            ]
 
         if args.search_space == "nlp":
             fidelity_list.pop(2)
