@@ -535,4 +535,6 @@ class PredictorEvaluator(object):
                 for key,value in res.items():
                     if type(value) == numpy.int32:
                         res[key] = int(value)
+                    if type(value) == numpy.float32:
+                        res[key] = float(value)
             json.dump(self.results, file, separators=(",", ":"))
