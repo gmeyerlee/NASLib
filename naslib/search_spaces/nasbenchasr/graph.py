@@ -68,15 +68,15 @@ class NasBenchASRSearchSpace(Graph):
         else:
             if full_lc and epoch == -1:
                 return [
-                    loss for loss in query_results[metric_to_nlp[metric]]
+                    loss for loss in query_results[metric_to_asr[metric]]
                 ]
             elif full_lc and epoch != -1:
                 return [
-                    loss for loss in query_results[metric_to_nlp[metric]][:epoch]
+                    loss for loss in query_results[metric_to_asr[metric]][:epoch]
                 ]
             else:
                 # return the value of the metric only at the specified epoch
-                return query_results[metric_to_nlp[metric]][epoch]
+                return query_results[metric_to_asr[metric]][epoch]
 
     def get_compact(self):
         assert self.compact is not None
