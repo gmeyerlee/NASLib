@@ -16,7 +16,7 @@ out_dir=$s3_folder\_$start_seed
 
 # search space / data:
 search_space=transnasbench101
-dataset=taskonomy
+dataset=autoencoder
 
 # other variables:
 trials=20

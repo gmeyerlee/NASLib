@@ -6,7 +6,7 @@ experiment_types=(vary_train_size vary_train_size vary_train_size vary_train_siz
 start_seed=$1
 if [ -z "$start_seed" ]
 then
-    start_seed=40
+    start_seed=80
 fi
 
 # folders:
@@ -16,7 +16,7 @@ out_dir=$s3_folder\_$start_seed
 
 # search space / data:
 search_space=transnasbench101
-dataset=taskonomy
+dataset=segmentsemantic
 
 # other variables:
 trials=20

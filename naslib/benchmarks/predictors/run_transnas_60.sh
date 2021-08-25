@@ -1,6 +1,6 @@
-predictors=(sotle lcsvr seminas xgb gcn bohamiann)
+predictors=(seminas xgb gcn bohamiann)
 
-experiment_types=(vary_fidelity vary_both vary_train_size vary_train_size vary_train_size vary_train_size)
+experiment_types=(vary_train_size vary_train_size vary_train_size vary_train_size)
 
 
 start_seed=$1
