@@ -73,7 +73,7 @@ def main(args):
             total_epochs = 10
             max_train_size = 1000
         elif args.search_spaze == "asr":
-            # total_epochs = 
+            total_epochs = 40
             max_train_size = 1000
 
         train_size_list = [
