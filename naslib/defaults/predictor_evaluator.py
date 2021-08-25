@@ -3,8 +3,6 @@ import time
 import json
 import logging
 import os
-
-import numpy
 import numpy as np
 import copy
 import torch
@@ -533,8 +531,8 @@ class PredictorEvaluator(object):
         ) as file:
             for res in self.results:
                 for key,value in res.items():
-                    if type(value) == numpy.int32 or type(value) == numpy.int64:
+                    if type(value) == np.int32 or type(value) == np.int64:
                         res[key] = int(value)
-                    if type(value) == numpy.float32 or type(value) == numpy.float64:
+                    if type(value) == np.float32 or type(value) == np.float64:
                         res[key] = float(value)
             json.dump(self.results, file, separators=(",", ":"))
