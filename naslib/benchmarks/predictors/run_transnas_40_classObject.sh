@@ -1,6 +1,6 @@
-predictors=(seminas xgb gcn bohamiann)
+predictors=(xgb bohamiann)
 
-experiment_types=(vary_train_size vary_train_size vary_train_size vary_train_size)
+experiment_types=(vary_train_size vary_train_size)
 
 
 start_seed=$1
@@ -15,7 +15,7 @@ s3_folder=ptrans
 out_dir=$s3_folder\_$start_seed
 
 # search space / data:
-search_space=transnasbench101
+search_space=transbench101
 dataset=class_object
 
 # other variables:

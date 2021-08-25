@@ -1,6 +1,6 @@
-predictors=(seminas xgb gcn bohamiann)
+predictors=(xgb bohamiann)
 
-experiment_types=(vary_train_size vary_train_size vary_train_size vary_train_size)
+experiment_types=(vary_train_size vary_train_size)
 
 
 start_seed=$1
