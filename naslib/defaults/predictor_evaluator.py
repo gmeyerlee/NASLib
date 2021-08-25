@@ -3,6 +3,8 @@ import time
 import json
 import logging
 import os
+
+import numpy
 import numpy as np
 import copy
 import torch
@@ -70,6 +72,9 @@ class PredictorEvaluator(object):
             self.full_lc = True
             self.hyperparameters = True
         elif self.search_space.get_type() == "transbench101":
+            self.full_lc = True
+            self.hyperparameters = True
+        elif self.search_space.get_type() == "asr":
             self.full_lc = True
             self.hyperparameters = True
         else:
@@ -146,6 +151,8 @@ class PredictorEvaluator(object):
                 arch.load_labeled_architecture(dataset_api=self.dataset_api)
 
             arch_hash = arch.get_hash()
+            if type(arch_hash) != tuple:
+                arch_hash = tuple([tuple(x) for x in arch_hash])
             if False: # removing this for consistency, for now
                 continue
             else:
@@ -524,4 +531,8 @@ class PredictorEvaluator(object):
         with codecs.open(
             os.path.join(self.config.save, "errors.json"), "w", encoding="utf-8"
         ) as file:
+            for res in self.results:
+                for key,value in res.items():
+                    if type(value) == numpy.int32:
+                        res[key] = int(value)
             json.dump(self.results, file, separators=(",", ":"))
