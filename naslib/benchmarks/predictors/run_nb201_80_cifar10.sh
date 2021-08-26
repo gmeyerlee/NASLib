@@ -1,6 +1,6 @@
-predictors=(sotle lcsvr seminas xgb gcn bohamiann)
+predictors=(gp rf mlp)
 
-experiment_types=(vary_fidelity vary_both vary_train_size vary_train_size vary_train_size vary_train_size)
+experiment_types=(vary_train_size vary_train_size vary_train_size)
 
 start_seed=$1
 if [ -z "$start_seed" ]
@@ -9,7 +9,7 @@ then
 fi
 
 # folders:
-base_file=/home/zabergjg/NASLib/naslib
+base_file=/home/shalag/NASLib/naslib
 s3_folder=p201_im
 out_dir=$s3_folder\_$start_seed
 
