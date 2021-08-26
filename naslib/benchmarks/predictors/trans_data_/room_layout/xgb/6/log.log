@@ -1,0 +1,76 @@
+[08/25 16:58:03] nl.utils.utils INFO: experiment_type....................vary_train_size
+[08/25 16:58:03] nl.utils.utils INFO: search_space.........................transbench101
+[08/25 16:58:03] nl.utils.utils INFO: dataset................................room_layout
+[08/25 16:58:03] nl.utils.utils INFO: predictor......................................xgb
+[08/25 16:58:03] nl.utils.utils INFO: uniform_random...................................1
+[08/25 16:58:03] nl.utils.utils INFO: test_size......................................200
+[08/25 16:58:03] nl.utils.utils INFO: train_size_single...............................10
+[08/25 16:58:03] nl.utils.utils INFO: train_size_list[5, 8, 14, 24, 42, 71, 121, 205, 347, 589, 1000]
+[08/25 16:58:03] nl.utils.utils INFO: fidelity_single..................................5
+[08/25 16:58:03] nl.utils.utils INFO: fidelity_list......[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+[08/25 16:58:03] nl.utils.utils INFO: out_dir...................................ptrans_0
+[08/25 16:58:03] nl.utils.utils INFO: max_hpo_time...................................900
+[08/25 16:58:03] nl.utils.utils INFO: seed.............................................6
+[08/25 16:58:03] nl.utils.utils INFO: searchbatch_size: 256
+cutout: False
+cutout_length: 16
+cutout_prob: 1.0
+data_size: 25000
+seed: 1000
+train_portion: 0.7
+[08/25 16:58:03] nl.utils.utils INFO: eval_only....................................False
+[08/25 16:58:03] nl.utils.utils INFO: resume.......................................False
+[08/25 16:58:03] nl.utils.utils INFO: model_path....................................None
+[08/25 16:58:03] nl.utils.utils INFO: save.........ptrans_0/room_layout/predictors/xgb/6
+[08/25 16:58:03] nl.utils.utils INFO: data............./home/zabergjg/NASLib/naslib/data
+[08/25 16:58:03] nl.search_spaces.core.graph WARNING: Update function could not be veryfied. Be cautious with the setting of `private_edge_data` in `update_edges()`
+[08/25 16:58:03] nl.search_spaces.core.graph WARNING: Update function could not be veryfied. Be cautious with the setting of `private_edge_data` in `update_edges()`
+[08/25 16:58:03] nl.search_spaces.core.graph WARNING: Update function could not be veryfied. Be cautious with the setting of `private_edge_data` in `update_edges()`
+[08/25 16:58:03] nl.search_spaces.core.graph WARNING: Update function could not be veryfied. Be cautious with the setting of `private_edge_data` in `update_edges()`
+[08/25 16:58:03] nl.search_spaces.core.graph WARNING: Update function could not be veryfied. Be cautious with the setting of `private_edge_data` in `update_edges()`
+[08/25 16:58:05] nl.defaults.predictor_evaluator INFO: Load the test set
+[08/25 16:58:31] nl.defaults.predictor_evaluator INFO: Load the training set
+[08/25 17:00:47] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/25 17:00:47] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/25 17:00:47] nl.defaults.predictor_evaluator INFO: train_size: 5, fidelity: 5, kendall tau -0.0403
+[08/25 17:00:47] nl.defaults.predictor_evaluator INFO: mae: 0.1663, rmse: 0.2373, pearson: 0.1779, spearman: -0.0537, kendalltau: -0.0403, kt_2dec: -0.0706, kt_1dec: -0.0403, precision_10: 0.0, precision_20: 0.0, train_size: 5, fidelity: 5, train_time: 34933.0, fit_time: 0.1075, query_time: 0.0, hp_max_depth: 6, hp_min_child_weight: 1, hp_colsample_bytree: 1, hp_learning_rate: 0.3, hp_colsample_bylevel: 1, cv_score: 0, 
+[08/25 17:00:47] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/25 17:00:47] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/25 17:00:47] nl.defaults.predictor_evaluator INFO: train_size: 8, fidelity: 5, kendall tau -0.0239
+[08/25 17:00:47] nl.defaults.predictor_evaluator INFO: mae: 0.1308, rmse: 0.1952, pearson: 0.1869, spearman: -0.0361, kendalltau: -0.0239, kt_2dec: 0.0333, kt_1dec: 0.0453, precision_10: 0.1, precision_20: 0.15, train_size: 8, fidelity: 5, train_time: 58147.0, fit_time: 0.123, query_time: 0.0, hp_max_depth: 6, hp_min_child_weight: 1, hp_colsample_bytree: 1, hp_learning_rate: 0.3, hp_colsample_bylevel: 1, cv_score: 0, 
+[08/25 17:00:47] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/25 17:00:47] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/25 17:00:48] nl.defaults.predictor_evaluator INFO: train_size: 14, fidelity: 5, kendall tau 0.1336
+[08/25 17:00:48] nl.defaults.predictor_evaluator INFO: mae: 0.1337, rmse: 0.1923, pearson: 0.2032, spearman: 0.1909, kendalltau: 0.1336, kt_2dec: 0.1354, kt_1dec: 0.1295, precision_10: 0.1, precision_20: 0.25, train_size: 14, fidelity: 5, train_time: 102414.0, fit_time: 0.1057, query_time: 0.0, hp_max_depth: 6, hp_min_child_weight: 1, hp_colsample_bytree: 1, hp_learning_rate: 0.3, hp_colsample_bylevel: 1, cv_score: 0, 
+[08/25 17:00:48] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/25 17:00:48] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/25 17:00:48] nl.defaults.predictor_evaluator INFO: train_size: 24, fidelity: 5, kendall tau 0.1586
+[08/25 17:00:48] nl.defaults.predictor_evaluator INFO: mae: 0.1051, rmse: 0.1494, pearson: 0.1825, spearman: 0.231, kendalltau: 0.1586, kt_2dec: 0.1544, kt_1dec: 0.1166, precision_10: 0.0, precision_20: 0.1, train_size: 24, fidelity: 5, train_time: 183970.0, fit_time: 0.1337, query_time: 0.0, hp_max_depth: 6, hp_min_child_weight: 1, hp_colsample_bytree: 1, hp_learning_rate: 0.3, hp_colsample_bylevel: 1, cv_score: 0, 
+[08/25 17:00:48] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/25 17:00:48] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/25 17:00:48] nl.defaults.predictor_evaluator INFO: train_size: 42, fidelity: 5, kendall tau 0.26
+[08/25 17:00:48] nl.defaults.predictor_evaluator INFO: mae: 0.0863, rmse: 0.1216, pearson: 0.3646, spearman: 0.3692, kendalltau: 0.26, kt_2dec: 0.2615, kt_1dec: 0.2719, precision_10: 0.0, precision_20: 0.25, train_size: 42, fidelity: 5, train_time: 312884.0, fit_time: 0.1193, query_time: 0.0, hp_max_depth: 6, hp_min_child_weight: 1, hp_colsample_bytree: 1, hp_learning_rate: 0.3, hp_colsample_bylevel: 1, cv_score: 0, 
+[08/25 17:00:48] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/25 17:00:48] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/25 17:00:48] nl.defaults.predictor_evaluator INFO: train_size: 71, fidelity: 5, kendall tau 0.3505
+[08/25 17:00:48] nl.defaults.predictor_evaluator INFO: mae: 0.0698, rmse: 0.0972, pearson: 0.6332, spearman: 0.4992, kendalltau: 0.3505, kt_2dec: 0.3629, kt_1dec: 0.3787, precision_10: 0.1, precision_20: 0.1, train_size: 71, fidelity: 5, train_time: 521603.0, fit_time: 0.1402, query_time: 0.0, hp_max_depth: 6, hp_min_child_weight: 1, hp_colsample_bytree: 1, hp_learning_rate: 0.3, hp_colsample_bylevel: 1, cv_score: 0, 
+[08/25 17:00:48] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/25 17:00:48] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/25 17:00:48] nl.defaults.predictor_evaluator INFO: train_size: 121, fidelity: 5, kendall tau 0.4449
+[08/25 17:00:48] nl.defaults.predictor_evaluator INFO: mae: 0.0569, rmse: 0.0848, pearson: 0.7379, spearman: 0.6111, kendalltau: 0.4449, kt_2dec: 0.4548, kt_1dec: 0.494, precision_10: 0.1, precision_20: 0.3, train_size: 121, fidelity: 5, train_time: 884265.0, fit_time: 0.1935, query_time: 0.0, hp_max_depth: 6, hp_min_child_weight: 1, hp_colsample_bytree: 1, hp_learning_rate: 0.3, hp_colsample_bylevel: 1, cv_score: 0, 
+[08/25 17:00:48] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/25 17:00:49] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/25 17:00:49] nl.defaults.predictor_evaluator INFO: train_size: 205, fidelity: 5, kendall tau 0.517
+[08/25 17:00:49] nl.defaults.predictor_evaluator INFO: mae: 0.0462, rmse: 0.0667, pearson: 0.8476, spearman: 0.698, kendalltau: 0.517, kt_2dec: 0.5285, kt_1dec: 0.5549, precision_10: 0.3, precision_20: 0.35, train_size: 205, fidelity: 5, train_time: 1504184.0, fit_time: 0.2414, query_time: 0.0, hp_max_depth: 6, hp_min_child_weight: 1, hp_colsample_bytree: 1, hp_learning_rate: 0.3, hp_colsample_bylevel: 1, cv_score: 0, 
+[08/25 17:00:49] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/25 17:00:49] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/25 17:00:49] nl.defaults.predictor_evaluator INFO: train_size: 347, fidelity: 5, kendall tau 0.6432
+[08/25 17:00:49] nl.defaults.predictor_evaluator INFO: mae: 0.0282, rmse: 0.0399, pearson: 0.9491, spearman: 0.8176, kendalltau: 0.6432, kt_2dec: 0.6497, kt_1dec: 0.6666, precision_10: 0.2, precision_20: 0.3, train_size: 347, fidelity: 5, train_time: 2521592.0, fit_time: 0.3068, query_time: 0.0, hp_max_depth: 6, hp_min_child_weight: 1, hp_colsample_bytree: 1, hp_learning_rate: 0.3, hp_colsample_bylevel: 1, cv_score: 0, 
+[08/25 17:00:49] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/25 17:00:49] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/25 17:00:49] nl.defaults.predictor_evaluator INFO: train_size: 589, fidelity: 5, kendall tau 0.6797
+[08/25 17:00:49] nl.defaults.predictor_evaluator INFO: mae: 0.0269, rmse: 0.0446, pearson: 0.9351, spearman: 0.8513, kendalltau: 0.6797, kt_2dec: 0.6946, kt_1dec: 0.7294, precision_10: 0.3, precision_20: 0.4, train_size: 589, fidelity: 5, train_time: 4250879.0, fit_time: 0.3926, query_time: 0.0, hp_max_depth: 6, hp_min_child_weight: 1, hp_colsample_bytree: 1, hp_learning_rate: 0.3, hp_colsample_bylevel: 1, cv_score: 0, 
+[08/25 17:00:49] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/25 17:00:50] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/25 17:00:50] nl.defaults.predictor_evaluator INFO: train_size: 1000, fidelity: 5, kendall tau 0.6956
+[08/25 17:00:50] nl.defaults.predictor_evaluator INFO: mae: 0.0225, rmse: 0.0343, pearson: 0.9623, spearman: 0.861, kendalltau: 0.6956, kt_2dec: 0.7083, kt_1dec: 0.731, precision_10: 0.1, precision_20: 0.35, train_size: 1000, fidelity: 5, train_time: 7213702.0, fit_time: 0.5717, query_time: 0.0, hp_max_depth: 6, hp_min_child_weight: 1, hp_colsample_bytree: 1, hp_learning_rate: 0.3, hp_colsample_bylevel: 1, cv_score: 0, 

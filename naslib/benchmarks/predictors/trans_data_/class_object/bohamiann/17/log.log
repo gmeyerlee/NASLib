@@ -1,0 +1,76 @@
+[08/25 17:56:56] nl.utils.utils INFO: experiment_type....................vary_train_size
+[08/25 17:56:56] nl.utils.utils INFO: search_space.........................transbench101
+[08/25 17:56:56] nl.utils.utils INFO: dataset...............................class_object
+[08/25 17:56:56] nl.utils.utils INFO: predictor................................bohamiann
+[08/25 17:56:56] nl.utils.utils INFO: uniform_random...................................1
+[08/25 17:56:56] nl.utils.utils INFO: test_size......................................200
+[08/25 17:56:56] nl.utils.utils INFO: train_size_single...............................10
+[08/25 17:56:56] nl.utils.utils INFO: train_size_list[5, 8, 14, 24, 42, 71, 121, 205, 347, 589, 1000]
+[08/25 17:56:56] nl.utils.utils INFO: fidelity_single..................................5
+[08/25 17:56:56] nl.utils.utils INFO: fidelity_list......[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+[08/25 17:56:56] nl.utils.utils INFO: out_dir...................................ptrans_0
+[08/25 17:56:56] nl.utils.utils INFO: max_hpo_time...................................900
+[08/25 17:56:56] nl.utils.utils INFO: seed............................................17
+[08/25 17:56:56] nl.utils.utils INFO: searchbatch_size: 256
+cutout: False
+cutout_length: 16
+cutout_prob: 1.0
+data_size: 25000
+seed: 1000
+train_portion: 0.7
+[08/25 17:56:56] nl.utils.utils INFO: eval_only....................................False
+[08/25 17:56:56] nl.utils.utils INFO: resume.......................................False
+[08/25 17:56:56] nl.utils.utils INFO: model_path....................................None
+[08/25 17:56:56] nl.utils.utils INFO: save.ptrans_0/class_object/predictors/bohamiann/17
+[08/25 17:56:56] nl.utils.utils INFO: data............./home/zabergjg/NASLib/naslib/data
+[08/25 17:56:56] nl.search_spaces.core.graph WARNING: Update function could not be veryfied. Be cautious with the setting of `private_edge_data` in `update_edges()`
+[08/25 17:56:56] nl.search_spaces.core.graph WARNING: Update function could not be veryfied. Be cautious with the setting of `private_edge_data` in `update_edges()`
+[08/25 17:56:56] nl.search_spaces.core.graph WARNING: Update function could not be veryfied. Be cautious with the setting of `private_edge_data` in `update_edges()`
+[08/25 17:56:56] nl.search_spaces.core.graph WARNING: Update function could not be veryfied. Be cautious with the setting of `private_edge_data` in `update_edges()`
+[08/25 17:56:56] nl.search_spaces.core.graph WARNING: Update function could not be veryfied. Be cautious with the setting of `private_edge_data` in `update_edges()`
+[08/25 17:56:59] nl.defaults.predictor_evaluator INFO: Load the test set
+[08/25 17:57:24] nl.defaults.predictor_evaluator INFO: Load the training set
+[08/25 17:59:37] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/25 17:59:38] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/25 17:59:38] nl.defaults.predictor_evaluator INFO: train_size: 5, fidelity: 5, kendall tau 0.0908
+[08/25 17:59:38] nl.defaults.predictor_evaluator INFO: mae: 4.7921, rmse: 6.0593, pearson: 0.1712, spearman: 0.1298, kendalltau: 0.0908, kt_2dec: 0.0904, kt_1dec: 0.0901, precision_10: 0.0, precision_20: 0.1, train_size: 5, fidelity: 5, train_time: 39505.0, fit_time: 0.2959, query_time: 0.0, cv_score: 0, 
+[08/25 17:59:38] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/25 17:59:38] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/25 17:59:38] nl.defaults.predictor_evaluator INFO: train_size: 8, fidelity: 5, kendall tau 0.2515
+[08/25 17:59:38] nl.defaults.predictor_evaluator INFO: mae: 4.4807, rmse: 5.4865, pearson: 0.3833, spearman: 0.3677, kendalltau: 0.2515, kt_2dec: 0.2514, kt_1dec: 0.2526, precision_10: 0.1, precision_20: 0.2, train_size: 8, fidelity: 5, train_time: 63504.0, fit_time: 0.2998, query_time: 0.0, cv_score: 0, 
+[08/25 17:59:38] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/25 17:59:38] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/25 17:59:38] nl.defaults.predictor_evaluator INFO: train_size: 14, fidelity: 5, kendall tau 0.2179
+[08/25 17:59:38] nl.defaults.predictor_evaluator INFO: mae: 4.9408, rmse: 6.3839, pearson: 0.3116, spearman: 0.3257, kendalltau: 0.2179, kt_2dec: 0.218, kt_1dec: 0.2187, precision_10: 0.0, precision_20: 0.05, train_size: 14, fidelity: 5, train_time: 109789.0, fit_time: 0.3044, query_time: 0.0, cv_score: 0, 
+[08/25 17:59:38] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/25 17:59:39] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/25 17:59:39] nl.defaults.predictor_evaluator INFO: train_size: 24, fidelity: 5, kendall tau 0.3513
+[08/25 17:59:39] nl.defaults.predictor_evaluator INFO: mae: 3.7899, rmse: 5.0103, pearson: 0.5383, spearman: 0.5093, kendalltau: 0.3513, kt_2dec: 0.3514, kt_1dec: 0.3529, precision_10: 0.1, precision_20: 0.1, train_size: 24, fidelity: 5, train_time: 184921.0, fit_time: 0.3033, query_time: 0.0, cv_score: 0, 
+[08/25 17:59:39] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/25 17:59:39] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/25 17:59:39] nl.defaults.predictor_evaluator INFO: train_size: 42, fidelity: 5, kendall tau 0.456
+[08/25 17:59:39] nl.defaults.predictor_evaluator INFO: mae: 3.4563, rmse: 4.436, pearson: 0.6446, spearman: 0.6407, kendalltau: 0.456, kt_2dec: 0.4563, kt_1dec: 0.4573, precision_10: 0.2, precision_20: 0.2, train_size: 42, fidelity: 5, train_time: 326603.0, fit_time: 0.309, query_time: 0.0, cv_score: 0, 
+[08/25 17:59:39] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/25 17:59:40] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/25 17:59:40] nl.defaults.predictor_evaluator INFO: train_size: 71, fidelity: 5, kendall tau 0.4551
+[08/25 17:59:40] nl.defaults.predictor_evaluator INFO: mae: 3.3787, rmse: 4.4148, pearson: 0.6479, spearman: 0.6527, kendalltau: 0.4551, kt_2dec: 0.4555, kt_1dec: 0.4572, precision_10: 0.2, precision_20: 0.2, train_size: 71, fidelity: 5, train_time: 548924.0, fit_time: 0.3132, query_time: 0.0, cv_score: 0, 
+[08/25 17:59:40] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/25 17:59:40] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/25 17:59:40] nl.defaults.predictor_evaluator INFO: train_size: 121, fidelity: 5, kendall tau 0.4331
+[08/25 17:59:40] nl.defaults.predictor_evaluator INFO: mae: 3.5854, rmse: 4.58, pearson: 0.6236, spearman: 0.612, kendalltau: 0.4331, kt_2dec: 0.4335, kt_1dec: 0.4347, precision_10: 0.2, precision_20: 0.15, train_size: 121, fidelity: 5, train_time: 929648.0, fit_time: 0.3107, query_time: 0.0, cv_score: 0, 
+[08/25 17:59:40] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/25 17:59:40] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/25 17:59:40] nl.defaults.predictor_evaluator INFO: train_size: 205, fidelity: 5, kendall tau 0.5015
+[08/25 17:59:40] nl.defaults.predictor_evaluator INFO: mae: 3.3733, rmse: 4.1834, pearson: 0.6955, spearman: 0.705, kendalltau: 0.5015, kt_2dec: 0.5018, kt_1dec: 0.5023, precision_10: 0.2, precision_20: 0.15, train_size: 205, fidelity: 5, train_time: 1557977.0, fit_time: 0.3193, query_time: 0.0, cv_score: 0, 
+[08/25 17:59:40] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/25 17:59:41] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/25 17:59:41] nl.defaults.predictor_evaluator INFO: train_size: 347, fidelity: 5, kendall tau 0.4996
+[08/25 17:59:41] nl.defaults.predictor_evaluator INFO: mae: 3.3292, rmse: 4.1844, pearson: 0.7017, spearman: 0.7086, kendalltau: 0.4996, kt_2dec: 0.4998, kt_1dec: 0.5016, precision_10: 0.2, precision_20: 0.15, train_size: 347, fidelity: 5, train_time: 2621747.0, fit_time: 0.3201, query_time: 0.0, cv_score: 0, 
+[08/25 17:59:41] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/25 17:59:41] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/25 17:59:41] nl.defaults.predictor_evaluator INFO: train_size: 589, fidelity: 5, kendall tau 0.5042
+[08/25 17:59:41] nl.defaults.predictor_evaluator INFO: mae: 3.3468, rmse: 4.1991, pearson: 0.7017, spearman: 0.7181, kendalltau: 0.5042, kt_2dec: 0.5041, kt_1dec: 0.5056, precision_10: 0.1, precision_20: 0.15, train_size: 589, fidelity: 5, train_time: 4431595.0, fit_time: 0.3284, query_time: 0.0, cv_score: 0, 
+[08/25 17:59:41] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/25 17:59:41] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/25 17:59:41] nl.defaults.predictor_evaluator INFO: train_size: 1000, fidelity: 5, kendall tau 0.5058
+[08/25 17:59:41] nl.defaults.predictor_evaluator INFO: mae: 3.372, rmse: 4.143, pearson: 0.7044, spearman: 0.715, kendalltau: 0.5058, kt_2dec: 0.5061, kt_1dec: 0.5092, precision_10: 0.1, precision_20: 0.15, train_size: 1000, fidelity: 5, train_time: 7471001.0, fit_time: 0.3452, query_time: 0.0, cv_score: 0, 
