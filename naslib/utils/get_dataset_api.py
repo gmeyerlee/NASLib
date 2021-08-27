@@ -14,8 +14,7 @@ def get_transbench101_api(dataset=None):
     from naslib.search_spaces import TransNASBenchAPI
     api = TransNASBenchAPI(
         os.path.join(get_project_root(), "data", "transnas-bench_v10141024.pth")
-        )
-    
+        ) 
     return {'api': api, 'task': dataset}
 
 
@@ -106,15 +105,15 @@ def get_nlp_api(dataset=None,
     nlp_arches = list(nlp_data.keys())
     
     # Load the NAS-Bench-NLP11 performance model
-    #import nasbench301
-    #performance_model = nasbench301.load_ensemble(
-        #os.path.expanduser(nlp_model_path)
-    #)
+    import nasbench301
+    performance_model = nasbench301.load_ensemble(
+        os.path.expanduser(nlp_model_path)
+    )
 
     return {
         "nlp_data": nlp_data,
         "nlp_arches": nlp_arches,
-        #"nlp_model":performance_model,
+        "nlp_model":performance_model,
     }
 
 
@@ -142,7 +141,10 @@ def get_dataset_api(search_space=None, dataset=None):
     elif search_space == "nlp":
         return get_nlp_api(dataset=dataset)
     
-    elif search_space == 'transbench101':
+    elif search_space == 'transbench101_micro':
+        return get_transbench101_api(dataset=dataset)
+    
+    elif search_space == 'transbench101_macro':
         return get_transbench101_api(dataset=dataset)
 
     elif search_space == "asr":
@@ -153,3 +155,4 @@ def get_dataset_api(search_space=None, dataset=None):
 
     else:
         raise NotImplementedError()
+
