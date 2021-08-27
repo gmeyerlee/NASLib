@@ -1,0 +1,145 @@
+[08/26 11:24:05] nl.utils.utils INFO: experiment_type....................vary_train_size
+[08/26 11:24:05] nl.utils.utils INFO: search_space.................................darts
+[08/26 11:24:05] nl.utils.utils INFO: dataset....................................cifar10
+[08/26 11:24:05] nl.utils.utils INFO: predictor.......................................gp
+[08/26 11:24:05] nl.utils.utils INFO: uniform_random...................................1
+[08/26 11:24:05] nl.utils.utils INFO: test_size......................................200
+[08/26 11:24:05] nl.utils.utils INFO: train_size_single...............................10
+[08/26 11:24:05] nl.utils.utils INFO: train_size_list[5, 8, 12, 20, 31, 50, 79, 126, 199, 316, 500]
+[08/26 11:24:05] nl.utils.utils INFO: fidelity_single..................................5
+[08/26 11:24:05] nl.utils.utils INFO: fidelity_list[1, 2, 3, 4, 5, 7, 10, 13, 17, 23, 30, 40, 54, 71, 95]
+[08/26 11:24:05] nl.utils.utils INFO: out_dir....................................p301_80
+[08/26 11:24:05] nl.utils.utils INFO: max_hpo_time...................................900
+[08/26 11:24:05] nl.utils.utils INFO: seed............................................84
+[08/26 11:24:05] nl.utils.utils INFO: searchbatch_size: 256
+cutout: False
+cutout_length: 16
+cutout_prob: 1.0
+data_size: 25000
+seed: 1000
+train_portion: 0.7
+[08/26 11:24:05] nl.utils.utils INFO: eval_only....................................False
+[08/26 11:24:05] nl.utils.utils INFO: resume.......................................False
+[08/26 11:24:05] nl.utils.utils INFO: model_path....................................None
+[08/26 11:24:05] nl.utils.utils INFO: save..............p301_80/cifar10/predictors/gp/84
+[08/26 11:24:05] nl.utils.utils INFO: data.............../home/shalag/NASLib/naslib/data
+[08/26 11:24:05] nl.search_spaces.core.graph WARNING: Update function could not be veryfied. Be cautious with the setting of `private_edge_data` in `update_edges()`
+[08/26 11:24:05] nl.search_spaces.core.graph WARNING: Update function could not be veryfied. Be cautious with the setting of `private_edge_data` in `update_edges()`
+[08/26 11:24:05] nl.search_spaces.core.graph WARNING: Update function could not be veryfied. Be cautious with the setting of `private_edge_data` in `update_edges()`
+[08/26 11:24:05] nl.search_spaces.core.graph WARNING: Update function could not be veryfied. Be cautious with the setting of `private_edge_data` in `update_edges()`
+[08/26 11:24:05] nl.search_spaces.core.graph WARNING: Update function could not be veryfied. Be cautious with the setting of `private_edge_data` in `update_edges()`
+[08/26 11:24:23] nl.defaults.predictor_evaluator INFO: Load the test set
+[08/26 11:25:54] nl.defaults.predictor_evaluator INFO: Load the training set
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: Error when computing metrics. ytest and test_pred are:
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: [93.15000153 93.34999847 91.59999847 92.38999939 91.98000336 93.66000366
+ 92.26999664 92.54000092 91.41000366 92.87000275 93.55000305 92.81999969
+ 93.01000214 93.29000092 92.36000061 93.08999634 92.34999847 93.30999756
+ 93.88999939 93.30000305 92.40000153 93.59999847 93.19999695 93.55999756
+ 92.15000153 93.23999786 92.58999634 92.62000275 93.69999695 92.91999817
+ 93.04000092 93.63999939 92.66999817 94.19999695 92.94000244 93.23000336
+ 92.63999939 94.12000275 93.05000305 93.5        93.69000244 92.19000244
+ 93.23000336 93.36000061 93.43000031 93.08999634 92.15000153 93.05000305
+ 93.59999847 93.12999725 93.61000061 92.22000122 93.05999756 94.09999847
+ 92.56999969 92.75       93.12999725 93.23000336 93.12999725 93.08999634
+ 91.98999786 93.40000153 93.05999756 92.56999969 93.12999725 91.93000031
+ 92.69000244 93.44999695 92.63999939 92.61000061 93.48000336 93.26999664
+ 92.34999847 92.34999847 93.38999939 92.5        93.69000244 92.83000183
+ 92.44000244 91.54000092 92.06999969 91.98999786 93.37000275 93.52999878
+ 93.33999634 93.81999969 94.09999847 92.73000336 93.81999969 93.26000214
+ 94.40000153 93.91000366 92.31999969 93.08999634 92.91999817 92.79000092
+ 93.19000244 92.72000122 91.98999786 91.22000122 93.19999695 93.66999817
+ 91.97000122 91.08999634 93.29000092 93.76999664 92.68000031 93.83999634
+ 93.22000122 93.5        93.54000092 93.01000214 93.73000336 93.5
+ 91.48000336 93.13999939 92.83000183 93.52999878 94.01000214 93.37000275
+ 92.87000275 93.83000183 92.22000122 92.69000244 92.12000275 91.08000183
+ 93.38999939 92.65000153 93.63999939 92.33999634 92.55999756 93.01000214
+ 92.26999664 93.48000336 93.26000214 93.69000244 93.37999725 92.48999786
+ 93.08000183 93.08999634 92.80999756 91.87999725 93.05000305 93.44000244
+ 93.12000275 93.56999969 92.08999634 92.5        93.69999695 93.13999939
+ 93.72000122 92.36000061 92.23999786 92.26999664 92.87000275 93.77999878
+ 92.94999695 93.20999908 92.79000092 91.88999939 92.90000153 93.62999725
+ 92.91999817 92.15000153 93.62000275 92.87999725 91.88999939 93.05000305
+ 92.97000122 93.05000305 94.08999634 93.38999939 91.58000183 91.63999939
+ 93.18000031 92.51000214 93.23000336 93.61000061 92.97000122 92.23999786
+ 92.43000031 92.23000336 93.37000275 92.34999847 93.94000244 91.62000275
+ 92.79000092 94.26999664 93.41000366 92.86000061 93.23000336 92.52999878
+ 92.48000336 92.59999847 91.94000244 93.72000122 93.         93.19000244
+ 91.41000366 93.04000092]
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: [92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018 92.70800018
+ 92.70800018 92.70800018]
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: train_size: 5, fidelity: 5, kendall tau nan
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: mae: 0.5913, rmse: 0.7057, pearson: nan, spearman: nan, kendalltau: nan, kt_2dec: nan, kt_1dec: nan, precision_10: 0.0, precision_20: 0.0, train_size: 5, fidelity: 5, train_time: 34760.4362, fit_time: 0.004, query_time: 0.0001, cv_score: 0, 
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: train_size: 8, fidelity: 5, kendall tau -0.0105
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: mae: 0.5421, rmse: 0.6673, pearson: 0.0041, spearman: -0.013, kendalltau: -0.0105, kt_2dec: nan, kt_1dec: nan, precision_10: 0.0, precision_20: 0.0, train_size: 8, fidelity: 5, train_time: 61403.3169, fit_time: 0.0024, query_time: 0.0, cv_score: 0, 
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: train_size: 12, fidelity: 5, kendall tau -0.0105
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: mae: 0.5479, rmse: 0.6695, pearson: 0.0135, spearman: -0.013, kendalltau: -0.0105, kt_2dec: nan, kt_1dec: nan, precision_10: 0.0, precision_20: 0.0, train_size: 12, fidelity: 5, train_time: 89352.3893, fit_time: 0.0024, query_time: 0.0, cv_score: 0, 
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: train_size: 20, fidelity: 5, kendall tau nan
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: mae: 0.5318, rmse: 0.6757, pearson: 0.0, spearman: nan, kendalltau: nan, kt_2dec: nan, kt_1dec: nan, precision_10: 0.0, precision_20: 0.0, train_size: 20, fidelity: 5, train_time: 154704.5813, fit_time: 0.0029, query_time: 0.0001, cv_score: 0, 
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: train_size: 31, fidelity: 5, kendall tau 0.0636
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: mae: 0.5333, rmse: 0.6829, pearson: 0.104, spearman: 0.0977, kendalltau: 0.0636, kt_2dec: nan, kt_1dec: nan, precision_10: 0.3, precision_20: 0.35, train_size: 31, fidelity: 5, train_time: 245261.5799, fit_time: 0.0034, query_time: 0.0001, cv_score: 0, 
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: train_size: 50, fidelity: 5, kendall tau 0.0834
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: mae: 0.5318, rmse: 0.6753, pearson: 0.0409, spearman: 0.1179, kendalltau: 0.0834, kt_2dec: nan, kt_1dec: nan, precision_10: 0.3, precision_20: 0.25, train_size: 50, fidelity: 5, train_time: 398265.8264, fit_time: 0.011, query_time: 0.0001, cv_score: 0, 
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: train_size: 79, fidelity: 5, kendall tau 0.0005
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: mae: 0.5354, rmse: 0.668, pearson: 0.0119, spearman: 0.0006, kendalltau: 0.0005, kt_2dec: 0.0005, kt_1dec: nan, precision_10: 0.0, precision_20: 0.0, train_size: 79, fidelity: 5, train_time: 636601.2652, fit_time: 0.0132, query_time: 0.0001, cv_score: 0, 
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: train_size: 126, fidelity: 5, kendall tau 0.1979
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: mae: 0.5194, rmse: 0.6487, pearson: 0.2815, spearman: 0.2889, kendalltau: 0.1979, kt_2dec: 0.199, kt_1dec: 0.1916, precision_10: 0.1, precision_20: 0.3, train_size: 126, fidelity: 5, train_time: 1014341.3823, fit_time: 0.0082, query_time: 0.0001, cv_score: 0, 
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: train_size: 199, fidelity: 5, kendall tau 0.0005
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: mae: 0.5374, rmse: 0.6672, pearson: 0.0119, spearman: 0.0006, kendalltau: 0.0005, kt_2dec: 0.0005, kt_1dec: nan, precision_10: 0.0, precision_20: 0.0, train_size: 199, fidelity: 5, train_time: 1582010.2329, fit_time: 0.012, query_time: 0.0001, cv_score: 0, 
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: train_size: 316, fidelity: 5, kendall tau 0.1468
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: mae: 0.5201, rmse: 0.648, pearson: 0.2403, spearman: 0.2194, kendalltau: 0.1468, kt_2dec: 0.1267, kt_1dec: 0.1386, precision_10: 0.0, precision_20: 0.15, train_size: 316, fidelity: 5, train_time: 2520937.6361, fit_time: 0.0195, query_time: 0.0001, cv_score: 0, 
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: Fit the predictor
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: Compute evaluation metrics
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: train_size: 500, fidelity: 5, kendall tau 0.3374
+[08/26 11:29:53] nl.defaults.predictor_evaluator INFO: mae: 0.5069, rmse: 0.6331, pearson: 0.5097, spearman: 0.4795, kendalltau: 0.3374, kt_2dec: 0.3433, kt_1dec: 0.3877, precision_10: 0.4, precision_20: 0.3, train_size: 500, fidelity: 5, train_time: 3970924.0869, fit_time: 0.0335, query_time: 0.0001, cv_score: 0, 
