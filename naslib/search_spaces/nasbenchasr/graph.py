@@ -53,6 +53,7 @@ class NasBenchASRSearchSpace(Graph):
             Metric.PARAMETERS,
             Metric.FLOPS,
             Metric.TRAIN_TIME,
+            Metric.RAW,
         ]
         query_results = dataset_api["asr_data"].full_info(self.compact)
 
@@ -63,7 +64,7 @@ class NasBenchASRSearchSpace(Graph):
             elif (metric == Metric.PARAMETERS) or (metric == Metric.FLOPS):
                 return query_results['info'][metric_to_asr[metric]]
             elif metric in [Metric.TRAIN_ACCURACY, Metric.TRAIN_LOSS,
-                            Metric.TRAIN_TIME]:
+                            Metric.TRAIN_TIME, Metric.RAW]:
                 return -1
         else:
             if full_lc and epoch == -1:
@@ -76,7 +77,7 @@ class NasBenchASRSearchSpace(Graph):
                 ]
             else:
                 # return the value of the metric only at the specified epoch
-                return query_results[metric_to_asr[metric]][epoch]
+                return float(query_results[metric_to_asr[metric]][epoch])
 
     def get_compact(self):
         assert self.compact is not None
