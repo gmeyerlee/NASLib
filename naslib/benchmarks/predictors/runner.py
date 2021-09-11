@@ -61,7 +61,7 @@ supported_predictors = {
     "dngo": DNGOPredictor(encoding_type="adjacency_one_hot"),
     "fisher": ZeroCostV2(config, batch_size=64, method_type="fisher"),
     "gcn": GCNPredictor(encoding_type="gcn", hpo_wrapper=False),
-    "gp": GPPredictor(encoding_type="adjacency_one_hot"),
+    "gp": GPPredictor(encoding_type="adjacency_one_hot", optimize_gp_hyper=True, num_steps=500),
     "gpwl": GPWLPredictor(
         ss_type=config.search_space,
         kernel_type="wloa",
@@ -78,10 +78,10 @@ supported_predictors = {
         metric=Metric.VAL_ACCURACY, all_curve=False, require_hyper=False
     ),
     "lgb": LGBoost(encoding_type="adjacency_one_hot", hpo_wrapper=False),
-    "mlp": MLPPredictor(encoding_type="adjacency_one_hot", hpo_wrapper=False),
+    "mlp": MLPPredictor(encoding_type="adjacency_one_hot", hpo_wrapper=True),
     "nao": SemiNASPredictor(encoding_type="seminas", semi=False, hpo_wrapper=False),
     "ngb": NGBoost(encoding_type="adjacency_one_hot", hpo_wrapper=False),
-    "rf": RandomForestPredictor(encoding_type="adjacency_one_hot", hpo_wrapper=False),
+    "rf": RandomForestPredictor(encoding_type="adjacency_one_hot", hpo_wrapper=True),
     "seminas": SemiNASPredictor(encoding_type="seminas", semi=True, hpo_wrapper=False),
     "snip": ZeroCostV2(config, batch_size=64, method_type="snip"),
     "sotl": SoLosspredictor(metric=Metric.TRAIN_LOSS, sum_option="SoTL"),
@@ -96,7 +96,7 @@ supported_predictors = {
     "var_sparse_gp": VarSparseGPPredictor(
         encoding_type="adjacency_one_hot", optimize_gp_hyper=True, num_steps=200
     ),
-    "xgb": XGBoost(encoding_type="adjacency_one_hot", hpo_wrapper=False),
+    "xgb": XGBoost(encoding_type="adjacency_one_hot", hpo_wrapper=True),
     # path encoding experiments:
     "bayes_lin_reg_path": BayesianLinearRegression(encoding_type="path"),
     "bohamiann_path": BOHAMIANN(encoding_type="path"),
