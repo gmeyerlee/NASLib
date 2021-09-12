@@ -15,7 +15,7 @@ s3_folder=ptransmacro_hyper
 out_dir=$s3_folder\_$start_seed
 
 # search space / data:
-search_space=transbench_macro
+search_space=transbench101_macro
 dataset=room_layout
 
 # other variables:
