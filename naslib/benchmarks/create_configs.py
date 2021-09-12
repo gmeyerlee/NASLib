@@ -178,10 +178,10 @@ def main(args):
         elif args.search_space == "nlp":
             total_epochs = 50 - 1
             max_train_size = 1000
-        elif args.search_space == "transbench101":
+        elif args.search_space == "transbench101_micro" or args.search_space == "transbench101_macro":
             total_epochs = 10
             max_train_size = 1000
-        elif args.search_spaze == "asr":
+        elif args.search_space == "asr":
             total_epochs = 40
             max_train_size = 1000
 
@@ -244,7 +244,7 @@ def main(args):
                 "train_size_single": args.train_size_single,
                 "fidelity_single": args.fidelity_single,
                 "fidelity_list": fidelity_list,
-                "max_hpo_time": 900,
+                "max_hpo_time": args.max_hpo_time,
             }
 
             with open(folder + f"/config_{args.predictor}_{i}.yaml", "w") as fh:
@@ -346,6 +346,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "--experiment_type", type=str, default="single", help="type of experiment"
     )
+    parser.add_argument(
+        "--max_hpo_time", type=int, default=900, help="HPO time"
+            )
 
     args = parser.parse_args()
 
