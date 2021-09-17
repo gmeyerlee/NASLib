@@ -6,13 +6,14 @@ import functools
 import copy
 import hashlib
 import numpy as np
+import collections
 import collections.abc as cabc
 
 
 def get_model_graph(arch_vec, ops=None, minimize=True, keep_dims=False):
     if ops is None:
-        import search_space as ss
-        ops = ss.all_ops
+        from naslib.search_spaces.nasbenchasr.graph import OP_NAMES as ss
+        ops = ss
     num_nodes = len(arch_vec)
     mat = np.zeros((num_nodes+2, num_nodes+2))
     labels = ['input']
@@ -639,3 +640,55 @@ def from_folder(folder, max_epochs=None, seeds=None, devices=None, include_stati
 
 
     return Dataset(datasets, bench_info, static_info, validate_data=validate_data)
+
+
+# utils to work with nested collections
+def recursive_iter(seq):
+    ''' Iterate over elements in seq recursively (returns only non-sequences)
+    '''
+    if isinstance(seq, collections.abc.Sequence):
+        for e in seq:
+            for v in recursive_iter(e):
+                yield v
+    else:
+        yield seq
+
+
+def flatten(seq):
+    ''' Flatten all nested sequences, returned type is type of ``seq``
+    '''
+    return list(recursive_iter(seq))
+
+
+def copy_structure(data, shape):
+    ''' Put data from ``data`` into nested containers like in ``shape``.
+        This can be seen as "unflatten" operation, i.e.:
+            seq == copy_structure(flatten(seq), seq)
+    '''
+    d_it = recursive_iter(data)
+
+    def copy_level(s):
+        if isinstance(s, collections.abc.Sequence):
+            return type(s)(copy_level(ss) for ss in s)
+        else:
+            return next(d_it)
+    return copy_level(shape)
+
+
+def count(seq):
+    ''' Count elements in ``seq`` in a streaming manner.
+    '''
+    ret = 0
+    for _ in seq:
+        ret += 1
+    return ret
+
+
+def get_first_n(seq, n):
+    ''' Get first ``n`` elements of ``seq`` in a streaming manner.
+    '''
+    c = 0
+    i = iter(seq)
+    while c < n:
+        yield next(i)
+        c += 1

@@ -63,8 +63,9 @@ def get_nasbench201_api(dataset=None):
 
 
 def get_darts_api(dataset=None, 
-                  nb301_model_path='~/nb_models/xgb_v1.0', 
-                  nb301_runtime_path='~/nb_models/lgb_runtime_v1.0'):
+                  nb301_model_path='data/nb_models/xgb_v1.0', 
+                  nb301_runtime_path='data/nb_models/lgb_runtime_v1.0',
+                  ):
     # Load the nb301 training data (which contains full learning curves)
     
     data_path = os.path.join(get_project_root(), "data/nb301_full_training.pickle")
@@ -75,12 +76,21 @@ def get_darts_api(dataset=None,
         nb301_arches = list(nb301_data.keys())
 
     # Load the nb301 performance and runtime models
-    nb301_model_path = os.path.expanduser(nb301_model_path)
-    nb301_runtime_path = os.path.expanduser(nb301_runtime_path)
+    nb301_model_path = os.path.join(get_project_root(), nb301_model_path)
+    # nb301_model_path = os.path.expanduser(nb301_model_path)
+    nb301_runtime_path = os.path.join(get_project_root(), nb301_runtime_path)
+    # nb301_runtime_path = os.path.expanduser(nb301_runtime_path)
     assert os.path.exists(nb301_model_path), "Download v1.0 models from\
     https://github.com/automl/nasbench301"
     assert os.path.exists(nb301_runtime_path), "Download v1.0 models from\
     https://github.com/automl/nasbench301"
+    
+    """
+    # TODO (kyu) add automatic downloading and unzipping to this script for better human interaction 
+    # list for nb_models https://figshare.com/ndownloader/files/24992018
+    # download and rename to add .zip , use unzip to get the correct one. 
+    # it's also weird to put them in the user home... shouldn't it be located at project data root?
+    """
 
     import nasbench301
     performance_model = nasbench301.load_ensemble(

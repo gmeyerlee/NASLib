@@ -177,6 +177,16 @@ def get_config_from_args(args=None, config_type="nas"):
             )
         ) as f:
             config = CfgNode.load_cfg(f)
+    elif config_type == "oneshot-debug":
+        # TODO (kyu) what's the difference between oneshot and nas? it seems to use the same set of stuff... might need to make this clearer.
+        with open(
+            os.path.join(
+                get_project_root(),
+                "benchmarks/nas_predictors",
+                "nas_predictor_config-debug.yaml",
+            )
+        ) as f:
+            config = CfgNode.load_cfg(f)
     elif config_type == "statistics":
         # load the default base
         with open(

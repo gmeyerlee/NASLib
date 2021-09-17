@@ -33,3 +33,9 @@ def copy_structure(data, shape):
             return next(d_it)
     return copy_level(shape)
 
+
+def convert_naslib_to_op_indices():
+    pass
+
+def convert_op_indices_to_naslib(op_indices, naslib):
+    pass

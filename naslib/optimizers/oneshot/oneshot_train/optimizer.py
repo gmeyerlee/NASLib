@@ -43,7 +43,6 @@ class OneShotNASOptimizer(DARTSOptimizer):
         arch_optimizer=None,
         loss_criteria=torch.nn.CrossEntropyLoss(),
     ):
-
         super(OneShotNASOptimizer, self).__init__(
             config, op_optimizer, arch_optimizer, loss_criteria
         )
@@ -71,6 +70,9 @@ class OneShotNASOptimizer(DARTSOptimizer):
         """
         arch_encoding: this can be either a Genotype object (when the darts
         space) or a list of 6 integers (when the nb201 space), aka op_indices
+
+        TODO support more encoding like TransBench101, NASBench101 and etc.
+
         """
 
         if self.graph.get_type() == "nasbench201":
@@ -133,6 +135,29 @@ class OneShotNASOptimizer(DARTSOptimizer):
                 update_alphas(
                     arch_encoding.reduce, self.graph.get_all_edge_data("alpha")[14:]
                 )
+        elif self.graph.get_type() == 'nasbenchasr':
+            # TODO, follows the NASBench201 idea, simply implement this
+            import ipdb; ipdb.set_trace()
+            assert type(arch_encoding) in [
+                list,
+                np.ndarray,
+            ], "nasbenchasr requires a list of ints of size 6 in order to query the one-shot model."
+            # so the problem is, (1,2) (2,3) (3,4) has 6 choices (ID, ..., Zero)
+            # (1,3) (1,4) (2,4) only have 2 choices (ID, Zero)
+            # What's the best practice to assign archs, 
+            # current design is to use all size the same, but when creating the architecture encoding
+            # it can only have [0-5, 0-1, 0-1, 0-6, 0-1, 0-6]
+            def _check_valid_nasbenchasr_encoding(en):
+                return all(en[i] <= 1 for i in (1, 2, 4))
+            assert _check_valid_nasbenchasr_encoding(arch_encoding), 'NASBenchASR at 1, 2, 4 only have 2 choice'
+            with torch.no_grad():
+                for i, op_index in enumerate(arch_encoding):
+                    s = 2 if i in (1,2,4) else 6
+                    _new_alpha = torch.nn.Parameter(
+                        torch.zeros(size=[s], requires_grad=False)
+                    )
+                    _new_alpha[op_index] = 1
+                    self.architectural_weights[i].copy_(_new_alpha)
 
     def get_final_architecture(self):
         # TODO
@@ -155,6 +180,10 @@ class OneShotOp(AbstractPrimitive):
     def forward(self, x, edge_data):
         """
         Element-wise summation of the output tensors coming from each edge.
+        
+        TODO a potential issue is, even if w = 0 for most of discrete one-shot case, 
+             the computation is wasted due to the weighted sum. 
+
         """
         return sum(w * op(x, None) for w, op in zip(edge_data.alpha, self.primitives))
 

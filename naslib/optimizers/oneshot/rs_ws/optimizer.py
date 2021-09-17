@@ -55,5 +55,12 @@ class RandomNASOptimizer(OneShotNASOptimizer):
             sample = tmp_graph.get_op_indices()
         elif self.graph.get_type() == "darts":
             sample = convert_compact_to_genotype(tmp_graph.get_compact())
+        else:
+            raise NotImplementedError(f'RandomNASOptimizer: graph type {self.graph.get_type()} not supported ')
 
+        # import ipdb; ipdb.set_trace()
+        # TODO (kyu) more to support here ...
+        # does this deviate from the original design? for example, the generic search space should 
+        # define the graph, random nas pick one arch anyway?
+        
         self.set_alphas_from_path(sample)
