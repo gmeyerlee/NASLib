@@ -44,7 +44,7 @@ class _ColorfulFormatter(logging.Formatter):
 
 
 @functools.lru_cache()  # so that calling setup_logger multiple times won't add many handlers
-def setup_logger(output=None, *, color=True, name="naslib", abbrev_name=None):
+def setup_logger(output=None, *, color=True, name="naslib", abbrev_name=None, debug=False):
     """
     Initialize the nalsib logger and set its verbosity level to "DEBUG".
     Args:
@@ -72,7 +72,7 @@ def setup_logger(output=None, *, color=True, name="naslib", abbrev_name=None):
 
     # stdout logger
     ch = logging.StreamHandler(stream=sys.stdout)
-    ch.setLevel(logging.INFO)
+    ch.setLevel(logging.INFO if not debug else logging.DEBUG)
     if color:
         formatter = _ColorfulFormatter(
             colored("[%(asctime)s %(name)s]: ", "green") + "%(message)s",

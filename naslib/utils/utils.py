@@ -350,6 +350,33 @@ def get_train_val_loaders(config, mode):
             transform=valid_transform,
             use_num_of_class_only=120,
         )
+    elif dataset.lower() == 'timit':
+        from .timit import TimitDataset, PhonemeEncoder, get_transforms, collate_fn
+        from ctcdecode import CTCBeamDecoder
+
+        encoder = PhonemeEncoder(48)
+        data_folder = f'{data}/{dataset}'
+        subsets = ['TRAIN', 'TRAIN', 'TEST']
+        # transforms = [get_transforms(s) for s in subsets]
+        datasets = [TimitDataset(
+            data_folder, encoder, subset=s, ignore_sa=True, transforms=get_transforms(s)) for s in subsets]
+        
+        indices = datasets[0].get_indices_shorter_than(None)
+        np.random.shuffle(indices)
+        split = int(np.floor(config.train_portion * len(indices)))
+        
+        # valid sampler is from scratch
+        train_sampler = torch.utils.data.SubsetRandomSampler(indices[:split])
+        valid_sampler = torch.utils.data.SubsetRandomSampler(indices[split:])
+        samplers = [train_sampler, valid_sampler, None]
+        loaders = [
+            torch.utils.data.DataLoader(d, batch_size=config.batch_size, sampler=samplers[i], pin_memory=True, collate_fn=collate_fn) for i, d in enumerate(datasets)
+            ]
+        
+        # Note that this only works with NB-ASR Trainer.
+        decoder = CTCBeamDecoder(encoder.get_vocab(inc_blank=True), beam_width=12, log_probs_input=True)
+        return (encoder, decoder, *loaders)
+        
     else:
         raise ValueError("Unknown dataset: {}".format(dataset))
 

@@ -160,7 +160,7 @@ def get_dataset_api(search_space=None, dataset=None):
     elif search_space == 'transbench101_macro':
         return get_transbench101_api(dataset=dataset)
 
-    elif search_space == "asr":
+    elif search_space in ["asr", "nasbenchasr"]:
         return get_asr_api(dataset=dataset)
 
     elif search_space == "test":

@@ -102,6 +102,7 @@ class Trainer(object):
             start_epoch = self._setup_checkpointers(resume_from, period=checkpoint_freq)
 
         if self.optimizer.using_step_function:
+        # No step function, no training...
             self.train_queue, self.valid_queue, _ = self.build_search_dataloaders(
                 self.config
             )
@@ -535,7 +536,7 @@ class Trainer(object):
         """
         Prepare train, validation, and test dataloaders with the splits defined
         in the config.
-
+        TODO this function seems not used anywhere
         Args:
             config (AttrDict): config from config file.
         """

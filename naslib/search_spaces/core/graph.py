@@ -12,9 +12,9 @@ from naslib.utils.logging import log_formats, log_first_n
 from .primitives import Identity, AbstractPrimitive
 from .query_metrics import Metric
 
+# logging.getLogger().setLevel(logging.DEBUG)
 logger = logging.getLogger(__name__)
-
-
+logger.setLevel(logging.INFO)
 class Graph(torch.nn.Module, nx.DiGraph):
     """
     Base class for defining a search space. Add nodes and edges
@@ -342,6 +342,7 @@ class Graph(torch.nn.Module, nx.DiGraph):
             args: This is only required to handle cases where the graph sits
                 on an edge and receives an EdgeData object which will be ignored
         """
+        # import ipdb; ipdb.set_trace()
         logger.debug("Graph {} called. Input {}.".format(self.name, log_formats(x)))
 
         # Assign x to the corresponding input nodes

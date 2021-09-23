@@ -44,7 +44,7 @@ class DARTSOptimizer(MetaOptimizer):
         config,
         op_optimizer=torch.optim.SGD,
         arch_optimizer=torch.optim.Adam,
-        loss_criteria=torch.nn.CrossEntropyLoss(),
+        loss_criteria=None,
     ):
         """
         Initialize a new instance.
@@ -57,7 +57,7 @@ class DARTSOptimizer(MetaOptimizer):
         self.config = config
         self.op_optimizer = op_optimizer
         self.arch_optimizer = arch_optimizer
-        self.loss = loss_criteria
+        self.loss = loss_criteria or torch.nn.CrossEntropyLoss()
         self.grad_clip = self.config.search.grad_clip
 
         self.architectural_weights = torch.nn.ParameterList()
@@ -76,7 +76,7 @@ class DARTSOptimizer(MetaOptimizer):
         # If there is no scope defined, let's use the search space default one
         if not scope:
             scope = graph.OPTIMIZER_SCOPE
-
+        
         # 1. add alphas
         graph.update_edges(
             self.__class__.add_alphas, scope=scope, private_edge_data=False
@@ -114,6 +114,10 @@ class DARTSOptimizer(MetaOptimizer):
         self.graph = graph
         self.scope = scope
 
+        # Use graph loss to overwrite the default loss
+        if hasattr(graph, 'loss'):
+            self.loss = graph.loss
+
     def get_checkpointables(self):
         return {
             "model": self.graph,
@@ -144,6 +148,9 @@ class DARTSOptimizer(MetaOptimizer):
             )
         )
         super().new_epoch(epoch)
+
+    def step_asr(self, inputs, inputs_val, training):
+        raise NotImplementedError('Please try to do this!')
 
     def step(self, data_train, data_val):
         input_train, target_train = data_train

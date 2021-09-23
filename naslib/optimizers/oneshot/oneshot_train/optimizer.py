@@ -136,8 +136,6 @@ class OneShotNASOptimizer(DARTSOptimizer):
                     arch_encoding.reduce, self.graph.get_all_edge_data("alpha")[14:]
                 )
         elif self.graph.get_type() == 'nasbenchasr':
-            # TODO, follows the NASBench201 idea, simply implement this
-            import ipdb; ipdb.set_trace()
             assert type(arch_encoding) in [
                 list,
                 np.ndarray,
@@ -152,7 +150,7 @@ class OneShotNASOptimizer(DARTSOptimizer):
             assert _check_valid_nasbenchasr_encoding(arch_encoding), 'NASBenchASR at 1, 2, 4 only have 2 choice'
             with torch.no_grad():
                 for i, op_index in enumerate(arch_encoding):
-                    s = 2 if i in (1,2,4) else 6
+                    s = 2 if i in (1,2,4) else 12
                     _new_alpha = torch.nn.Parameter(
                         torch.zeros(size=[s], requires_grad=False)
                     )
@@ -183,9 +181,11 @@ class OneShotOp(AbstractPrimitive):
         
         TODO a potential issue is, even if w = 0 for most of discrete one-shot case, 
              the computation is wasted due to the weighted sum. 
+        
+        Easy Fix is to select the max of edge_data alpha and output the sum directly
 
         """
-        return sum(w * op(x, None) for w, op in zip(edge_data.alpha, self.primitives))
-
+        return sum(w * op(x, None) for w, op in zip(edge_data.alpha, self.primitives) if w >= 0.)
+ 
     def get_embedded_ops(self):
         return self.primitives
