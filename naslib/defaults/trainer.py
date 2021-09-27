@@ -1,4 +1,5 @@
 import codecs
+from naslib.search_spaces.core.graph import Graph
 import time
 import json
 import logging
@@ -16,6 +17,7 @@ from naslib.utils import utils
 from naslib.utils.logging import log_every_n_seconds, log_first_n
 from naslib.search_spaces.darts.conversions import convert_naslib_to_genotype
 
+from typing import Callable
 from .additional_primitives import DropPathWrapper
 
 logger = logging.getLogger(__name__)
@@ -73,7 +75,7 @@ class Trainer(object):
             }
         )
 
-    def search(self, resume_from=""):
+    def search(self, resume_from="", summary_writer=None, after_epoch: Callable[[int], None]=None, report_incumbent=True):
         """
         Start the architecture search.
 
@@ -165,7 +167,7 @@ class Trainer(object):
                     valid_acc,
                     test_acc,
                     train_time,
-                ) = self.optimizer.train_statistics()
+                ) = self.optimizer.train_statistics(report_incumbent)
                 train_loss, valid_loss, test_loss = -1, -1, -1
 
                 self.errors_dict.train_acc.append(train_acc)
@@ -193,9 +195,16 @@ class Trainer(object):
 
             self._log_to_json()
 
-            self._log_and_reset_accuracies(e)
+            self._log_and_reset_accuracies(e, summary_writer)
+
+            if after_epoch is not None:
+                after_epoch(e)
 
         self.optimizer.after_training()
+
+        if summary_writer is not None:
+            summary_writer.close()
+
         logger.info("Training finished")
 
     def evaluate_oneshot(self, resume_from="", dataloader=None):
@@ -244,12 +253,21 @@ class Trainer(object):
 
     def evaluate(
         self,
+<<<<<<< HEAD
         retrain=True,
         search_model="",
         resume_from="",
         best_arch=None,
         dataset_api=None,
         train_from_scratch=False
+=======
+        retrain:bool=True,
+        search_model:str="",
+        resume_from:str="",
+        best_arch:Graph=None,
+        dataset_api:object=None,
+        metric:Metric=None,
+>>>>>>> Develop
     ):
         """
         Evaluate the final architecture as given from the optimizer.
@@ -258,12 +276,14 @@ class Trainer(object):
         Otherwise train as defined in the config.
 
         Args:
-            retrain (bool): Reset the weights from the architecure search
-            search_model (str): Path to checkpoint file that was created during
-                search. If not provided, then try to load 'model_final.pth' from search
-            resume_from (str): Resume retraining from the given checkpoint file.
-            best_arch: Parsed model you want to directly evaluate and ignore the final model
-                from the optimizer.
+            retrain (bool)      : Reset the weights from the architecure search
+            search_model (str)  : Path to checkpoint file that was created during search. If not provided,
+                                  then try to load 'model_final.pth' from search
+            resume_from (str)   : Resume retraining from the given checkpoint file.
+            best_arch           : Parsed model you want to directly evaluate and ignore the final model
+                                  from the optimizer.
+            dataset_api         : Dataset API to use for querying model performance.
+            metric              : Metric to query the benchmark for.
         """
         logger.info("Start evaluation")
         if not best_arch:
@@ -277,8 +297,14 @@ class Trainer(object):
             best_arch = self.optimizer.get_final_architecture()
         logger.info("Final architecture:\n" + str(convert_naslib_to_genotype(best_arch)))
 
+<<<<<<< HEAD
         if best_arch.QUERYABLE and not retrain:
             metric = Metric.TEST_ACCURACY
+=======
+        if best_arch.QUERYABLE:
+            if metric is None:
+                metric = Metric.TEST_ACCURACY
+>>>>>>> Develop
             result = best_arch.query(
                 metric=metric, dataset=self.config.dataset, dataset_api=dataset_api
             )
@@ -481,7 +507,7 @@ class Trainer(object):
             eta_min=config.evaluation.learning_rate_min,
         )
 
-    def _log_and_reset_accuracies(self, epoch):
+    def _log_and_reset_accuracies(self, epoch, writer=None):
         logger.info(
             "Epoch {} done. Train accuracy (top1, top5): {:.5f}, {:.5f}, Validation accuracy: {:.5f}, {:.5f}".format(
                 epoch,
@@ -491,6 +517,15 @@ class Trainer(object):
                 self.val_top5.avg,
             )
         )
+
+        if writer is not None:
+            writer.add_scalar('Train accuracy (top 1)', self.train_top1.avg, epoch)
+            writer.add_scalar('Train accuracy (top 5)', self.train_top5.avg, epoch)
+            writer.add_scalar('Train loss', self.train_loss.avg, epoch)
+            writer.add_scalar('Validation accuracy (top 1)', self.val_top1.avg, epoch)
+            writer.add_scalar('Validation accuracy (top 5)', self.val_top5.avg, epoch)
+            writer.add_scalar('Validation loss', self.val_loss.avg, epoch)
+
         self.train_top1.reset()
         self.train_top5.reset()
         self.train_loss.reset()

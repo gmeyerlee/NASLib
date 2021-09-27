@@ -69,6 +69,9 @@ class PredictorEvaluator(object):
         elif self.search_space.get_type() == "nlp":
             self.full_lc = True
             self.hyperparameters = True
+        elif self.search_space.get_type() == "transbench101":
+            self.full_lc = True
+            self.hyperparameters = True
         else:
             raise NotImplementedError(
                 "This search space is not yet implemented in PredictorEvaluator."
@@ -143,7 +146,7 @@ class PredictorEvaluator(object):
                 arch.load_labeled_architecture(dataset_api=self.dataset_api)
 
             arch_hash = arch.get_hash()
-            if arch_hash in arch_hash_map:
+            if False: # removing this for consistency, for now
                 continue
             else:
                 arch_hash_map[arch_hash] = True

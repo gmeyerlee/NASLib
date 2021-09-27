@@ -400,6 +400,7 @@ class Graph(torch.nn.Module, nx.DiGraph):
                                 edge_data.op, node_idx, neigbor_idx
                             )
                         )
+
                         edge_output = edge_data.op.forward(x, edge_data=edge_data)
                     else:
                         raise ValueError(
@@ -839,6 +840,9 @@ class Graph(torch.nn.Module, nx.DiGraph):
 
     def mutate(self):
         raise NotImplementedError()
+
+    def set_load_labeled(self):
+        self.load_labeled = True
 
     def query(self, metric: Metric, dataset: str, path: str) -> float:
         """

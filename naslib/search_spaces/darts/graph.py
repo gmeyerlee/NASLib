@@ -20,10 +20,12 @@ from naslib.search_spaces.darts.conversions import (
     convert_naslib_to_genotype,
     get_cell_of_type,
     make_compact_mutable,
-    create_edge_op_dict
+    make_compact_immutable,
 )
 from naslib.search_spaces.core.query_metrics import Metric
 from .primitives import FactorizedReduce
+
+import torch.nn.functional as F
 
 logger = logging.getLogger(__name__)
 
@@ -394,6 +396,7 @@ class DartsSearchSpace(Graph):
         metric_to_nb301 = {
             Metric.TRAIN_LOSS: "train_losses",
             Metric.VAL_ACCURACY: "val_accuracies",
+            Metric.TEST_ACCURACY: "val_accuracies",
             Metric.TRAIN_TIME: "runtime",
         }
 
@@ -406,6 +409,7 @@ class DartsSearchSpace(Graph):
             """
             assert metric in [
                 Metric.VAL_ACCURACY,
+                Metric.TEST_ACCURACY,
                 Metric.TRAIN_LOSS,
                 Metric.TRAIN_TIME,
                 Metric.HP,
@@ -454,10 +458,21 @@ class DartsSearchSpace(Graph):
     def get_hash(self):
         return self.get_compact()
 
+    def get_arch_iterator(self, dataset_api=None):
+        # currently set up for nasbench301 data, not surrogate
+        arch_list = np.array(dataset_api["nb301_arches"])
+        random.shuffle(arch_list)
+        return arch_list
+
     def set_compact(self, compact):
         # This will update the edges in the naslib object to match compact
         self.compact = compact
         convert_compact_to_naslib(compact, self)
+
+    def set_spec(self, compact, dataset_api=None):
+        # this is just to unify the setters across search spaces
+        # TODO: change it to set_spec on all search spaces
+        self.set_compact(make_compact_immutable(compact))
 
     def sample_random_architecture(self, dataset_api=None):
         """
@@ -635,6 +650,19 @@ def _truncate_input_edges(node, in_edges, out_edges):
     """
     Removes input edges if there are more than k.
     """
+
+    def _largest_post_softmax_weight(edge) -> int:
+        _, edge_data = edge
+
+        alpha = edge_data.alpha.detach()
+        # The zero operation has its value set to -inf to ensure it never gets selected
+        # This hack just ensures that it is the weakest softmax activation, since softmax can't
+        # take inf as input
+        alpha[1] = torch.min(alpha) - 0.001
+        alpha_softmax = F.softmax(alpha)
+
+        return torch.max(alpha_softmax)
+
     k = 2
     if len(in_edges) >= k:
         if any(e.has("alpha") or (e.has("final") and e.final) for _, e in in_edges):
@@ -642,10 +670,8 @@ def _truncate_input_edges(node, in_edges, out_edges):
             for _, data in in_edges:
                 if data.has("final") and data.final:
                     return  # We are looking at an out node
-                data.alpha.data[1] = -float("Inf")  # Zero op should never be max alpha
-            sorted_edge_ids = sorted(
-                in_edges, key=lambda x: max(x[1].alpha), reverse=True
-            )
+                data.alpha.data[1] = -float("Inf")
+            sorted_edge_ids = sorted(in_edges, key=_largest_post_softmax_weight, reverse=True)
             keep_edges, _ = zip(*sorted_edge_ids[:k])
             for edge_id, edge_data in in_edges:
                 if edge_id not in keep_edges:
