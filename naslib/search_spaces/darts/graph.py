@@ -19,6 +19,7 @@ from naslib.search_spaces.darts.conversions import (
     convert_naslib_to_compact,
     convert_naslib_to_genotype,
     get_cell_of_type,
+    create_edge_op_dict,
     make_compact_mutable,
     make_compact_immutable,
 )
