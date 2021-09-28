@@ -19,6 +19,8 @@ from naslib.search_spaces import DartsSearchSpace
 from naslib.utils import utils, setup_logger
 from naslib.search_spaces.darts.conversions import Genotype
 
+from torch.utils.tensorboard import SummaryWriter
+
 config = utils.get_config_from_args()
 config.seed = int(config.seed)
 config.search.seed = int(config.search.seed)
@@ -49,6 +51,8 @@ optimizer = supported_optimizers[config.optimizer]
 optimizer.adapt_search_space(search_space)
 
 trainer = Trainer(optimizer, config)
+
+writer = SummaryWriter(config.save)
 # trainer.search(resume_from=utils.get_last_checkpoint(config) if config.resume else "")
 
 # if config.eval_only:
@@ -80,5 +84,5 @@ DARTS_V2 = Genotype(
 )
 
 optimizer.graph.set_alphas_for_genotype(DARTS_V2)
-trainer.evaluate(resume_from=utils.get_last_checkpoint(config, search=False) if config.resume else "")
+trainer.evaluate(resume_from=utils.get_last_checkpoint(config, search=False) if config.resume else "", writer=writer)
 print('Done')
