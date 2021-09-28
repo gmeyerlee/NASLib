@@ -253,21 +253,13 @@ class Trainer(object):
 
     def evaluate(
         self,
-<<<<<<< HEAD
-        retrain=True,
-        search_model="",
-        resume_from="",
-        best_arch=None,
-        dataset_api=None,
-        train_from_scratch=False
-=======
         retrain:bool=True,
         search_model:str="",
         resume_from:str="",
         best_arch:Graph=None,
         dataset_api:object=None,
         metric:Metric=None,
->>>>>>> Develop
+        writer=None,
     ):
         """
         Evaluate the final architecture as given from the optimizer.
@@ -297,14 +289,9 @@ class Trainer(object):
             best_arch = self.optimizer.get_final_architecture()
         logger.info("Final architecture:\n" + str(convert_naslib_to_genotype(best_arch)))
 
-<<<<<<< HEAD
-        if best_arch.QUERYABLE and not retrain:
-            metric = Metric.TEST_ACCURACY
-=======
         if best_arch.QUERYABLE:
             if metric is None:
                 metric = Metric.TEST_ACCURACY
->>>>>>> Develop
             result = best_arch.query(
                 metric=metric, dataset=self.config.dataset, dataset_api=dataset_api
             )
@@ -425,7 +412,7 @@ class Trainer(object):
 
                     scheduler.step()
                     self.periodic_checkpointer.step(e)
-                    self._log_and_reset_accuracies(e)
+                    self._log_and_reset_accuracies(e, writer)
 
             # Disable drop path
             best_arch.update_edges(
