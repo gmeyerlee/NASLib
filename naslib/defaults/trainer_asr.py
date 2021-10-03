@@ -104,7 +104,7 @@ class TrainerASR(Trainer):
 
             if self.optimizer.using_step_function:
                 self.optimizer.graph.train()
-                import ipdb; ipdb.set_trace()
+                
                 for step, data_train in enumerate(self.train_queue):
                     
                     """ 

@@ -158,7 +158,7 @@ class Head(ASRPrimitive):
         output = output.permute(0,2,1)
         output = self.layers[1](output)[0]
         output = self.layers[2](output)
-        output = output.permute(0,2,1)
+        # output = output.permute(0,2,1)
         return output
 
 

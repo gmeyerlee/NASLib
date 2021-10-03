@@ -1,6 +1,8 @@
 import numpy as np
 import torch
 import logging
+import torch.nn as nn
+import torch.nn.functional as F
 from torch.autograd import Variable
 
 from naslib.search_spaces.core.primitives import AbstractPrimitive
@@ -9,7 +11,6 @@ from naslib.utils.utils import count_parameters_in_MB
 from naslib.search_spaces.core.query_metrics import Metric
 
 import naslib.search_spaces.core.primitives as ops
-
 logger = logging.getLogger(__name__)
 
 
@@ -150,7 +151,31 @@ class DARTSOptimizer(MetaOptimizer):
         super().new_epoch(epoch)
 
     def step_asr(self, inputs, inputs_val, training):
-        raise NotImplementedError('Please try to do this!')
+        unrolled = False
+        import ipdb; ipdb.set_trace()
+        def _train_step(inputs, optimizer, grad_clip):
+            (audio, audio_len), (targets, targets_len) = inputs
+            if training: 
+                optimizer.zero_grad()
+                self.graph.train()
+            output = self.graph(audio)
+            output = F.log_softmax(output, dim=2)
+            output_len = audio_len // 4
+            loss = self.loss(output, output_len, targets, targets_len)
+            _regu_loss = loss + 0.01 * sum(torch.norm(l.conv.weight) for l in self.graph.modules() if 'PadConvRelu' in str(l.__class__))
+            if training:
+                _regu_loss.backward()
+                if grad_clip:
+                    torch.nn.utils.clip_grad_norm_(self.graph.parameters(), self.grad_clip)
+                optimizer.step()
+            return loss.detach(), output.detach(), output_len.detach()
+
+        if unrolled:
+            raise NotImplementedError()
+        else:
+            # train the arch_optimizer
+            _train_step(inputs_val, self.arch_optimizer, False)
+            return _train_step(inputs, self.op_optimizer, self.grad_clip)
 
     def step(self, data_train, data_val):
         input_train, target_train = data_train

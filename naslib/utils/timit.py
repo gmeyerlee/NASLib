@@ -1,6 +1,7 @@
 import pathlib
 
 import torch
+from torch.utils.data import DataLoader
 import torchaudio
 import torchvision
 import numpy as np
@@ -26,7 +27,6 @@ def get_transforms(part_name):
     return transforms
 
 def collate_fn(batch):
-    import ipdb; ipdb.set_trace()
     audio = [b[0][0] for b in batch]
     audio_lengths = [a.shape[-1] for a in audio]
     sentence = [b[1] for b in batch]
@@ -113,8 +113,8 @@ class PhonemeEncoder:
 class TimitDataset(torch.utils.data.Dataset):
     def __init__(self, root_folder, encoder, subset='TRAIN', ignore_sa=True, transforms=None):
         root = pathlib.Path(root_folder).expanduser() / 'data'
-        wavs = list(root.rglob(f'{subset}/**/*.WAV.wav'))
-        # wavs = list(root.rglob(f'{subset}/**/*.RIFF.WAV'))
+        # wavs = list(root.rglob(f'{subset}/**/*.WAV.wav'))
+        wavs = list(root.rglob(f'{subset}/**/*.RIFF.WAV'))
         wavs = sorted(wavs)
         if ignore_sa:
             wavs = [w for w in wavs if not w.name.startswith('SA')]
@@ -206,11 +206,15 @@ def get_dataloaders(timit_root, batch_size):
         return (audio, torch.tensor(audio_lengths)), (torch.tensor(sentence, dtype=torch.int32), torch.tensor(sentence_lengths))
 
 
-    subsets = ['TRAIN', 'VAL', 'TEST']
+    subsets = ['TRAIN', 'TEST', 'TEST']
     datasets = [TimitDataset(timit_root, encoder, subset=s, ignore_sa=True, transforms=get_transforms(s)) for s in subsets]
     train_sampler = torch.utils.data.SubsetRandomSampler(datasets[0].get_indices_shorter_than(None))
     loaders = [torch.utils.data.DataLoader(d, batch_size=batch_size, sampler=train_sampler if not i else None, pin_memory=True, collate_fn=collate_fn) for i, d in enumerate(datasets)]
+    
     return (encoder, *loaders)
+
+    # weird stuff here...
+    # why the data loader only have 1 batch? check the collate_fn if possible?
 
 
 def set_time_limit(loader, time_limit):
