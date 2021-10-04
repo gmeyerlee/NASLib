@@ -23,7 +23,7 @@ allows researchers to easily innovate on individual components (e.g., define a n
 search space while reusing an optimizer and evaluation pipeline, or propose a new
 optimizer with existing search spaces). It is designed to be modular, extensible and easy to use.
 
-NASLib was developed by the [**AutoML Freiburg group**](https://www.automl.org/team/) and with the help of the NAS community, we are constantly adding new _search spaces_, _optimizers_ and _benchmarks_ to the library. Please reach out to zelaa@cs.uni-freiburg.de for any questions or potential collaborations. 
+NASLib was developed by the [**AutoML Freiburg group**](https://www.automlxx.org/team/) and with the help of the NAS community, we are constantly adding new _search spaces_, _optimizers_ and _benchmarks_ to the library. Please reach out to zelaa@cs.uni-freiburg.de for any questions or potential collaborations. 
 
 ![naslib-overview](images/naslib-overall.png)
 
@@ -31,7 +31,6 @@ NASLib was developed by the [**AutoML Freiburg group**](https://www.automl.org/t
 | [**Usage**](#usage)
 | [**Docs**](examples/)
 | [**Contributing**](#contributing)
-| [**Cite**](#cite)
 
 # Setup
 
@@ -76,33 +75,3 @@ For more examples see [naslib tutorial](examples/naslib_tutorial.ipynb), [intro 
 
 ## Contributing
 We welcome contributions to the library along with any potential issues or suggestions. Please create a pull request to the Develop branch.
-
-
-## Cite
-
-If you use this code in your own work, please use the following bibtex entries:
-
-```bibtex
-@misc{naslib-2020, 
-  title={NASLib: A Modular and Flexible Neural Architecture Search Library}, 
-  author={Ruchte, Michael and Zela, Arber and Siems, Julien and Grabocka, Josif and Hutter, Frank}, 
-  year={2020}, publisher={GitHub}, 
-  howpublished={\url{https://github.com/automl/NASLib}} }
- ``` 
- 
-
-<p align="center">
-  <img src="images/predictors.png" alt="predictors" width="75%">
-</p>
-
-NASLib has been used to run an extensive comparison of 31 performance predictors (figure above). See the separate readme: <a href="examples/predictors.md">predictors.md</a>
-and our paper: <a href="https://arxiv.org/abs/2104.01177">How Powerful are Performance Predictors in Neural Architecture Search?</a>
-
-```bibtex
-@article{white2021powerful,
-  title={How Powerful are Performance Predictors in Neural Architecture Search?},
-  author={White, Colin and Zela, Arber and Ru, Binxin and Liu, Yang and Hutter, Frank},
-  journal={arXiv preprint arXiv:2104.01177},
-  year={2021}
-}
-```
