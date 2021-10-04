@@ -23,7 +23,7 @@ allows researchers to easily innovate on individual components (e.g., define a n
 search space while reusing an optimizer and evaluation pipeline, or propose a new
 optimizer with existing search spaces). It is designed to be modular, extensible and easy to use.
 
-NASLib was developed by the [**AutoML Freiburg group**](https://www.automlxx.org/team/) and with the help of the NAS community, we are constantly adding new _search spaces_, _optimizers_ and _benchmarks_ to the library. Please reach out to zelaa@cs.uni-freiburg.de for any questions or potential collaborations. 
+NASLib was developed by the [**AutoML Freiburg group**](https://www.xxxxx.org/team/) and with the help of the NAS community, we are constantly adding new _search spaces_, _optimizers_ and _benchmarks_ to the library. Please reach out to zelaa@cs.uni-freiburg.de for any questions or potential collaborations. 
 
 ![naslib-overview](images/naslib-overall.png)
 
