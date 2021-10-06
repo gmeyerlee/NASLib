@@ -25,18 +25,6 @@ with open("requirements.txt", "r") as f:
     for line in f:
         requirements.append(line.strip())
 
-#git_nasbench = "git+https://github.com/yashsmehta/nasbench.git@master"
-#
-#try:
-    #import nasbench
-#except ImportError:
-    #if '--user' in sys.argv:
-        #subprocess.run([sys.executable, '-m', 'pip', 'install', '--upgrade',
-            #'--user', git_nasbench], check=False)
-    #else:
-        #subprocess.run([sys.executable, '-m', 'pip', 'install', '--upgrade',
-            #git_nasbench], check=False)
-
 
 print('-- Building version ' + version)
 print('-- Note: by default installs pytorch-cpu version (1.9.0), update to torch-gpu by following instructions from: https://pytorch.org/get-started/locally/')
@@ -47,9 +35,9 @@ setup(
     description='NASLib: A modular and extensible Neural Architecture Search (NAS) library.',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    author='AutoML Freiburg',
-    author_email='zelaa@cs.uni-freiburg.de',
-    url='https://github.com/automl/NASLib',
+    author='xxxxx',
+    author_email='xxxxx',
+    url='xxxxx',
     license='Apache License 2.0',
     classifiers=['Development Status :: 1 - Beta'],
     packages=find_packages(),
