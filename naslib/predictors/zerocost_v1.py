@@ -1,5 +1,5 @@
 """
-Author: Robin Ru @ University of Oxford
+Author: yyyyy yyy @ University of xxxxxx
 This contains implementations of jacov and snip based on
 https://github.com/BayesWatch/nas-without-training (jacov)
 and https://github.com/gahaalt/SNIP-pruning (snip)

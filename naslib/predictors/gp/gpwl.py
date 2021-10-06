@@ -1,4 +1,4 @@
-# Author: Xingchen Wan & Binxin Ru @ University of Oxford
+# Author: Xingchen Wan & Binxin Ru @ University of xxxxxx
 # Ru, B., Wan, X., et al., 2021. "Interpretable Neural Architecture Search via Bayesian Optimisation using Weisfeiler-Lehman Kernels". In ICLR 2021.
 
 

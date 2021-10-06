@@ -2,7 +2,7 @@
 # Original Author: Ioannis Siglidis <y.siglidis@gmail.com>
 # License: BSD 3 clause
 
-# Modified by: Xingchen Wan @ University of Oxford for
+# Modified by: Xingchen Wan @ University of xxxxxx for
 # Ru, B., Wan, X., et al., 2021. "Interpretable Neural Architecture Search via Bayesian Optimisation using Weisfiler-Lehman Kernels". In ICLR 2021.
 
 

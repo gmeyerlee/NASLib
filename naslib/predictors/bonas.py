@@ -1,4 +1,4 @@
-# Author: Yang Liu @ Abacus.ai
+# Author: xxxx xxx @ xxxxxx
 # This is an implementation of gcn predictor for NAS from the paper:
 # Shi et al., 2020. Bridging the Gap between Sample-based and
 # One-shot Neural Architecture Search with BONAS

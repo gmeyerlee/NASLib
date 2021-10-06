@@ -1,4 +1,4 @@
-# Author: Yang Liu @ Abacus.ai
+# Author: xxxx xxx @ xxxxxx
 # This is an implementation of GBDT predictor for NAS from the paper:
 # Luo, Renqian, et al. "Neural architecture search with gbdt." arXiv preprint arXiv:2007.04785 (2020).
 

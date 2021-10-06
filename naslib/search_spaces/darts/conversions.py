@@ -262,7 +262,6 @@ def convert_compact_to_genotype(compact):
         reduce=genotype[1],
         reduce_concat=[2, 3, 4, 5],
     )
-    # TODO: need to check with Colin and/or Arber
     #  return Genotype(
     #     normal = genotype[0],
     #     normal_concat = [2, 3, 4, 5, 6],

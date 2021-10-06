@@ -1,4 +1,4 @@
-# Author: Xingchen Wan @ University of Oxford
+# Author: Xingchen Wan @ University of xxxxxx
 # Ru, B., Wan, X., et al., 2021. "Interpretable Neural Architecture Search via Bayesian Optimisation using Weisfiler-Lehman Kernels". In ICLR 2021.
 
 import numpy as np

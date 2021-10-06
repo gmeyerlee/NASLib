@@ -1,4 +1,4 @@
-# Author: Yang Liu @ Abacus.ai
+# Author: xxxx xxx @ xxxxxx
 # This is an implementation of the semi-supervised predictor for NAS from the paper:
 # Luo et al., 2020. "Semi-Supervised Neural Architecture Search" https://arxiv.org/abs/2002.10389
 from __future__ import absolute_import
