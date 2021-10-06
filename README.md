@@ -1,7 +1,3 @@
-<div align="center">
-  <img src="images/naslib-logo.png" width="650" height="400">
-</div>
-
 <p align="center">
   <a href="https://github.com/automl/NASLib">
     <img src="https://img.shields.io/badge/Python-3.7%20%7C%203.8-blue?style=for-the-badge&logo=python" />
@@ -17,15 +13,11 @@
   </a>
 </p>
 
+# NAS-Bench-Suite
+In this repository, we introduce NAS-Bench-Suite, a comprehensive and extensible collection of NAS benchmarks accessible through a unified interface, created with the aim to facilitate reproducible, generalizable, and rapid NAS research. NAS-Bench-Suite includes queryable NAS benchmarks such as NAS-Bench-101, NAS-Bench-201, NAS-Bench-301 (DARTS), NAS-Bench-NLP, NAS-Bench-ASR, TransNAS-Bench-101, NAS-Bench-MR, and more.
 
-**NASLib** is a modular and flexible framework created with the aim of providing a common codebase to the community to facilitate research on **Neural Architecture Search** (NAS). It offers high-level abstractions for designing and reusing search spaces, interfaces to benchmarks and evaluation pipelines, enabling the implementation and extension of state-of-the-art NAS methods with a few lines of code. The modularized nature of NASLib
-allows researchers to easily innovate on individual components (e.g., define a new
-search space while reusing an optimizer and evaluation pipeline, or propose a new
-optimizer with existing search spaces). It is designed to be modular, extensible and easy to use.
+We use NAS-Bench-Suite to give an in-depth analysis of the generalizability of popular NAS algorithms and performance prediction methods, finding that many conclusions drawn from a few NAS benchmarks do not generalize to other benchmarks.
 
-NASLib was developed by the [**AutoML Freiburg group**](https://www.xxxxx.org/team/) and with the help of the NAS community, we are constantly adding new _search spaces_, _optimizers_ and _benchmarks_ to the library. Please reach out to zelaa@cs.uni-freiburg.de for any questions or potential collaborations. 
-
-![naslib-overview](images/naslib-overall.png)
 
 [**Setup**](#setup)
 | [**Usage**](#usage)
@@ -71,7 +63,9 @@ trainer.search()        # Search for an architecture
 trainer.evaluate()      # Evaluate the best architecture
 ```
 
-For more examples see [naslib tutorial](examples/naslib_tutorial.ipynb), [intro to search spaces](examples/search_spaces.ipynb) and [intro to predictors](examples/predictors.md).
+For more examples, see [naslib tutorial](examples/naslib_tutorial.ipynb) and [intro to search spaces](examples/search_spaces.ipynb).
 
 ## Contributing
-We welcome contributions to the library along with any potential issues or suggestions. Please create a pull request to the Develop branch.
+:warning: this is an anonymized version of our codebase. 
+
+In our future de-anonymized release, we will welcome contributions from the community, along with suggestions or comments. Users can create `pull requests` or open `issues`.
