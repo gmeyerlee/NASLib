@@ -64,7 +64,7 @@ def default_argument_parser():
     )
     parser.add_argument(
         "--config-file",
-        default="{}/benchmarks/predictors/predictor_config.yaml".format(
+        default="{}/runners/predictors/predictor_config.yaml".format(
             get_project_root()
         ),
         metavar="FILE",
@@ -155,7 +155,7 @@ def get_config_from_args(args=None, config_type="nas"):
         # load the default base
         with open(
             os.path.join(
-                get_project_root(), "benchmarks/predictors", "predictor_config.yaml"
+                get_project_root(), "runners/predictors", "predictor_config.yaml"
             )
         ) as f:
             config = CfgNode.load_cfg(f)
@@ -163,16 +163,16 @@ def get_config_from_args(args=None, config_type="nas"):
         # load the default base
         with open(
             os.path.join(
-                get_project_root(), "benchmarks/bbo", "discrete_config.yaml"
+                get_project_root(), "runners/bbo", "discrete_config.yaml"
             )
         ) as f:
             config = CfgNode.load_cfg(f)
     elif config_type == "nas_predictor":
         # load the default base
-        # with open(os.path.join(get_project_root(), 'benchmarks/nas_predictors', 'nas_predictor_config.yaml')) as f:
+        # with open(os.path.join(get_project_root(), 'runners/nas_predictors', 'nas_predictor_config.yaml')) as f:
         with open(
             os.path.join(
-                get_project_root(), "benchmarks/nas_predictors", "discrete_config.yaml"
+                get_project_root(), "runners/nas_predictors", "discrete_config.yaml"
             )
         ) as f:
             config = CfgNode.load_cfg(f)
@@ -180,7 +180,7 @@ def get_config_from_args(args=None, config_type="nas"):
         with open(
             os.path.join(
                 get_project_root(),
-                "benchmarks/nas_predictors",
+                "runners/nas_predictors",
                 "nas_predictor_config.yaml",
             )
         ) as f:
@@ -189,7 +189,7 @@ def get_config_from_args(args=None, config_type="nas"):
         # load the default base
         with open(
             os.path.join(
-                get_project_root(), "benchmarks/statistics", "statistics_config.yaml"
+                get_project_root(), "runners/statistics", "statistics_config.yaml"
             )
         ) as f:
             config = CfgNode.load_cfg(f)
