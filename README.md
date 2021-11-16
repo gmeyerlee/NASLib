@@ -50,20 +50,12 @@ The test coverage can be seen with `coverage report`.
 
 # Usage
 
-To get started, check out [`demo.py`](examples/demo.py).
+To get started, check out the tutorials in [`examples`](examples). These include tutorials for 
+[getting started with naslib](examples/getting_started_with_naslib.ipynb), [intro to search spaces](examples/understanding_search_spaces_in_naslib.ipynb), and [plotting](examples/plotter_notebook.ipynb).
 
-```python
-search_space = SimpleCellSearchSpace()
+The runner files for all experiments are available in [`naslib/runners`](naslib/runners). These include runner files for [black-box algorithms](naslib/runners/bbo), [predictors](naslib/runners/predictors), and [statistics experiments](naslib/runners/statistics).
 
-optimizer = DARTSOptimizer(config)
-optimizer.adapt_search_space(search_space)
-
-trainer = Trainer(optimizer, config)
-trainer.search()        # Search for an architecture
-trainer.evaluate()      # Evaluate the best architecture
-```
-
-For more examples, see [naslib tutorial](examples/naslib_tutorial.ipynb) and [intro to search spaces](examples/search_spaces.ipynb).
+We also have a [`scripts`](scripts) folder to run batch experiments, but be warned that some of these scripts use `slurm`. If you do not use `slurm`, it is better to use the runner files directly instead of the scripts.
 
 ## Contributing
 :warning: this is an anonymized version of our codebase. 
