@@ -205,13 +205,13 @@ def get_config_from_args(args=None, config_type="nas"):
                 arg1, arg2 = arg.split(".")
                 config[arg1][arg2] = type(config[arg1][arg2])(value)
             else:
-                config[arg] = value
+                config[arg] = type(config[arg])(value)
 
         config.eval_only = args.eval_only
         config.resume = args.resume
         config.model_path = args.model_path
         if config_type != "nas_predictor":
-            config.seed = args.seed
+            config.seed = int(args.seed)
 
         # load config file
         config.set_new_allowed(True)
