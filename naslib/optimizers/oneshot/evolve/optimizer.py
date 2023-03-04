@@ -190,7 +190,7 @@ class EvolvingOptimizer(OneShotNASOptimizer):
             else:
                 return
 
-        sample = np.random.choice(list(range(len(self.population))), size=n_sample, replace=False)
+        sample = list(range(len(self.population))) # np.random.choice(list(range(len(self.population))), size=n_sample, replace=False)
         if self.innov_protect:
             f1, f2, f3 = self._pareto_fronts(sample)
             sf1 = sorted(f1, key = lambda x : self.population[x][1])

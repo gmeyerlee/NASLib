@@ -14,7 +14,7 @@ logger.info(f"Seed is {config.seed}")
 
 search_space = NasBench201SearchSpace()  # use SimpleCellSearchSpace() for less heavy search
 
-optimizer = EvolvingOptimizer(config, innov_protect=True)
+optimizer = EvolvingOptimizer(config, innov_protect=False)
 #dataset_api = get_dataset_api(search_space, config.dataset)
 optimizer.adapt_search_space(search_space) #, dataset_api=dataset_api)
 
