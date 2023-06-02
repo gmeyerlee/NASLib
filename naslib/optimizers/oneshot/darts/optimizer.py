@@ -265,6 +265,73 @@ class DARTSOptimizer(MetaOptimizer):
         pred = model(input)
         return criterion(pred, target)
 
+    def set_alphas_from_path(self, arch_encoding):
+        """
+        arch_encoding: this can be either a Genotype object (when the nasbench301
+        space) or a list of 6 integers (when the nb201 space), aka op_indices
+        """
+
+        if self.graph.get_type() == "nasbench201":
+            assert type(arch_encoding) in [
+                list,
+                np.ndarray,
+            ], "nasbench201 requires a list of ints of size 6 in order to query the one-shot model."
+
+            with torch.no_grad():
+                for i, op_index in enumerate(arch_encoding):
+                    _new_alpha = torch.nn.Parameter(
+                        torch.zeros(size=[5], requires_grad=False)
+                    )
+                    _new_alpha[op_index] = 1
+                    self.architectural_weights[i].copy_(_new_alpha)
+
+        elif self.graph.get_type() == "nasbench301":
+            assert (
+                type(arch_encoding) is Genotype
+            ), "darts requires a Genotype object in order to query the one-shot model."
+
+            def update_alphas(cell_type, alphas):
+                n_inputs = 2
+                start_idx = 0
+                end_idx = 2
+
+                for i, (op, input_node) in enumerate(cell_type):
+                    if i % 2 == 0:
+                        alphas_subset = alphas[start_idx:end_idx]
+                        n_inputs += 1
+                        start_idx = end_idx
+                        end_idx += n_inputs
+
+                    alphas_subset[input_node][ops.index(op)] = 1
+
+            # darts = [id, zero, maxpool, avg, sep3, sep5, dil3, dil5]
+            ops = [
+                "skip_connect",
+                "zero",
+                "max_pool_3x3",
+                "avg_pool_3x3",
+                "sep_conv_3x3",
+                "sep_conv_5x5",
+                "dil_conv_3x3",
+                "dil_conv_5x5",
+            ]
+
+            # set all alphas to 0 firstly
+            with torch.no_grad():
+                for alpha in self.architectural_weights:
+                    alpha.copy_(
+                        torch.nn.Parameter(
+                            torch.zeros(size=[len(ops)], requires_grad=False)
+                        )
+                    )
+
+                update_alphas(
+                    arch_encoding.normal, self.graph.get_all_edge_data("alpha")[:14]
+                )
+                update_alphas(
+                    arch_encoding.reduce, self.graph.get_all_edge_data("alpha")[14:]
+                )
+
 
 class DARTSMixedOp(MixedOp):
     """

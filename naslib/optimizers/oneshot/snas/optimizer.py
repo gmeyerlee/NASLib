@@ -8,9 +8,10 @@ from naslib.optimizers.oneshot.darts.optimizer import DARTSOptimizer
 logger = logging.getLogger(__name__)
 
 
-class GDASOptimizer(DARTSOptimizer):
+class SNASOptimizer(DARTSOptimizer):
     """
-    Implements GDAS as defined in
+    Implements SNAS as defined in
+	# TODO add SNAS citation
 
         Dong and Yang (2019): Searching for a Robust Neural Architecture in Four GPU Hours
 
@@ -49,10 +50,10 @@ class GDASOptimizer(DARTSOptimizer):
     def update_ops(edge):
         """
         Function to replace the primitive ops at the edges
-        with the GDAS specific GDASMixedOp.
+        with the SNAS specific SNASMixedOp.
         """
         primitives = edge.data.op
-        edge.data.set("op", GDASMixedOp(primitives))
+        edge.data.set("op", SNASMixedOp(primitives))
 
     def adapt_search_space(self, search_space, scope=None):
         """
@@ -93,9 +94,6 @@ class GDASOptimizer(DARTSOptimizer):
             arch_parameters = arch_parameters.to(device)
             logits = (arch_parameters.log_softmax(dim=1) + gumbels) / tau
             probs = torch.nn.functional.softmax(logits, dim=1)
-            index = probs.max(-1, keepdim=True)[1]
-            one_h = torch.zeros_like(logits).scatter_(-1, index, 1.0)
-            hardwts = one_h - probs.detach() + probs
             if (
                 (torch.isinf(gumbels).any())
                 or (torch.isinf(probs).any())
@@ -105,11 +103,9 @@ class GDASOptimizer(DARTSOptimizer):
             else:
                 break
 
-        weights = hardwts[0]
-        argmaxs = index[0].item()
+        weights = probs[0]
 
         edge.data.set("sampled_arch_weight", weights, shared=True)
-        edge.data.set("argmax", argmaxs, shared=True)
 
     @staticmethod
     def remove_sampled_alphas(edge):
@@ -166,10 +162,10 @@ class GDASOptimizer(DARTSOptimizer):
         return logits_train, logits_val, train_loss, val_loss
 
 
-class GDASMixedOp(MixedOp):
+class SNASMixedOp(MixedOp):
     def __init__(self, primitives, min_cuda_memory=False):
         """
-        Initialize the mixed op for GDAS.
+        Initialize the mixed op for SNAS.
 
         Args:
             primitives (list): The primitive operations to sample from.
@@ -190,13 +186,7 @@ class GDASMixedOp(MixedOp):
         """
         Applies the gumbel softmax to the architecture weights
         before forwarding `x` through the graph as in DARTS
-        """
+        """ 
 
-        argmax = torch.argmax(weights)
+        return sum(w * op(x, None) for w, op in zip(weights, self.primitives))
 
-        weighted_sum = sum(
-            weights[i] * op(x, None) if i == argmax else weights[i]
-            for i, op in enumerate(self.primitives)
-        )
-
-        return weighted_sum

@@ -176,7 +176,10 @@ class DrNASMixedOp(MixedOp):
         self.min_cuda_memory = min_cuda_memory
 
     def get_weights(self, edge_data):
-        return edge_data.sampled_arch_weight
+        if edge_data.has("sampled_arch_weight"):
+            return edge_data.sampled_arch_weight
+        else:
+            return edge_data.alpha
 
     def process_weights(self, weights):
         return weights
