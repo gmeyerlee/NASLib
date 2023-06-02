@@ -1,0 +1,65 @@
+dataset: cifar10
+optimizer: oneshot
+out_dir: run
+search:
+  acq_fn_optimization: mutation
+  acq_fn_type: its
+  checkpoint_freq: 5
+  debug_predictor: false
+  encoding_type: path
+  epochs: 250
+  warm_start_epochs: 0
+  grad_clip: 5
+  train_portion: 0.5
+  data_size: 25000
+  batch_size: 64
+  learning_rate: 0.025
+  learning_rate_min: 0.001
+  momentum: 0.9
+  weight_decay: 0.0003
+
+  cutout: False
+  cutout_length: 16
+  cutout_prob: 1.0
+  drop_path_prob: 0.0
+
+  unrolled: False
+  arch_learning_rate: 0.0003
+  arch_weight_decay: 0.001
+  output_weights: True
+  fidelity: 200
+
+  # GDAS
+  tau_max: 10
+  tau_min: 0.1
+  k: 25
+  max_mutations: 1
+  num_arches_to_mutate: 2
+  num_candidates: 100
+  num_ensemble: 3
+  num_init: 10
+  population_size: 30
+  predictor_type: bananas
+  sample_size: 10
+evaluation:
+  acq_fn_optimization: mutation
+  acq_fn_type: its
+  checkpoint_freq: 5
+  debug_predictor: false
+  encoding_type: path
+  epochs: 250
+  fidelity: 200
+  k: 25
+  max_mutations: 1
+  num_arches_to_mutate: 2
+  num_candidates: 100
+  num_ensemble: 3
+  num_init: 10
+  population_size: 30
+  predictor_type: bananas
+  sample_size: 10
+  warm_start_epochs: 0
+  grad_clip: 5
+
+search_space: nasbench201
+seed: 1001
